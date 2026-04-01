@@ -34,33 +34,31 @@ function isPublicRoute(pathname: string): boolean {
   return publicRoutes.some((route) => pathname.startsWith(route));
 }
 
-function demoMiddleware(req: NextRequest) {
-  // In demo mode, redirect /login to /dashboard
-  if (req.nextUrl.pathname === '/login') {
-    return NextResponse.redirect(new URL('/dashboard', req.url));
-  }
-  return NextResponse.next();
-}
-
-const authMiddleware = withAuth(
-  function middleware(req) {
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        const { pathname } = req.nextUrl;
-        if (isPublicRoute(pathname)) return true;
-        return !!token;
+export default DEMO_MODE
+  ? function middleware(req: NextRequest) {
+      // In demo mode, redirect /login to /dashboard
+      if (req.nextUrl.pathname === '/login' || req.nextUrl.pathname.startsWith('/login')) {
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+      }
+      return NextResponse.next();
+    }
+  : withAuth(
+      function middleware(req) {
+        return NextResponse.next();
       },
-    },
-    pages: {
-      signIn: '/login',
-    },
-  }
-);
-
-export default DEMO_MODE ? demoMiddleware : authMiddleware;
+      {
+        callbacks: {
+          authorized: ({ token, req }) => {
+            const { pathname } = req.nextUrl;
+            if (isPublicRoute(pathname)) return true;
+            return !!token;
+          },
+        },
+        pages: {
+          signIn: '/login',
+        },
+      }
+    );
 
 export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
