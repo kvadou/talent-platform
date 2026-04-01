@@ -293,13 +293,14 @@ export function Header({
         {/* Center Logo */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
           <Link href="/dashboard" className="block group">
-            <Image
-              src="/logo.png"
-              alt="Acme Talent"
-              width={72}
-              height={72}
-              className="h-12 w-12 sm:h-[68px] sm:w-[68px] object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
-            />
+            <div className="flex items-center gap-2 group-hover:scale-105 transition-transform duration-300 drop-shadow-lg">
+              <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 sm:h-9 sm:w-9">
+                <rect width="36" height="36" rx="8" fill="#3b8fc2" />
+                <path d="M8 24L18 10L28 24H8Z" fill="white" fillOpacity="0.9" />
+                <circle cx="18" cy="20" r="4" fill="#3b8fc2" />
+              </svg>
+              <span className="hidden sm:inline text-white font-bold text-lg tracking-tight">Acme Talent</span>
+            </div>
           </Link>
         </div>
 
@@ -488,16 +489,14 @@ export function Header({
             {/* Menu Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-100">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-purple-100 p-1.5">
-                  <Image
-                    src="/logo.png"
-                    alt="Acme Talent"
-                    width={40}
-                    height={40}
-                    className="h-full w-full object-contain"
-                  />
+                <div className="h-10 w-10 rounded-lg bg-[#3b8fc2]/10 flex items-center justify-center">
+                  <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="36" height="36" rx="8" fill="#3b8fc2" />
+                    <path d="M8 24L18 10L28 24H8Z" fill="white" fillOpacity="0.9" />
+                    <circle cx="18" cy="20" r="4" fill="#3b8fc2" />
+                  </svg>
                 </div>
-                <span className="font-semibold text-gray-900">Menu</span>
+                <span className="font-semibold text-gray-900">Acme Talent</span>
               </div>
               <button
                 onClick={() => setMobileMenuOpen(false)}
