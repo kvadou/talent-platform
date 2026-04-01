@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { UserRole } from '@prisma/client';
-import { getSession } from '@/lib/auth';
+import { getSession, ensureUser, DEMO_MODE } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getUserMarkets } from '@/lib/market-scope';
 
@@ -15,6 +15,20 @@ export async function requireApiUser(): Promise<ApiUserContext | NextResponse> {
   const session = await getSession();
   if (!session?.user?.email) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  // In demo mode, ensure the demo user exists in DB
+  if (DEMO_MODE) {
+    const user = await ensureUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    return {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      organizationId: user.organizationId,
+    };
   }
 
   const user = await prisma.user.findUnique({

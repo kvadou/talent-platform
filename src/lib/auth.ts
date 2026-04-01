@@ -2,11 +2,25 @@ import { NextAuthOptions, getServerSession } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { prisma } from './prisma';
 
+// Demo mode — bypasses all auth with a mock user
+const DEMO_MODE = process.env.DEMO_MODE === 'true';
+
+const DEMO_SESSION = {
+  user: {
+    id: 'demo-user',
+    email: 'demo@acmetalent.com',
+    name: 'Demo User',
+    image: null,
+    role: 'HQ_ADMIN',
+  },
+  expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+};
+
 // Allowed email domains
 const ALLOWED_DOMAINS = ['acmetalent.com', 'chessat3.sg'];
 
 export const authOptions: NextAuthOptions = {
-  providers: [
+  providers: DEMO_MODE ? [] : [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
@@ -117,6 +131,7 @@ export const authOptions: NextAuthOptions = {
  * Use this in API routes and Server Components.
  */
 export async function getSession() {
+  if (DEMO_MODE) return DEMO_SESSION as any;
   return getServerSession(authOptions);
 }
 
@@ -137,6 +152,7 @@ export async function requireAuth() {
  * Returns null if not authenticated.
  */
 export async function getCurrentUser() {
+  if (DEMO_MODE) return ensureUser();
   const session = await getSession();
   if (!session?.user?.email) {
     return null;
@@ -174,7 +190,7 @@ export async function ensureUser() {
         email,
         firstName,
         lastName,
-        role: 'RECRUITER',
+        role: DEMO_MODE ? 'HQ_ADMIN' : 'RECRUITER',
         organization: {
           connectOrCreate: {
             where: { id: 'acme-org' },
@@ -187,3 +203,5 @@ export async function ensureUser() {
 
   return user;
 }
+
+export { DEMO_MODE };

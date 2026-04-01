@@ -1,5 +1,7 @@
 import { withAuth } from 'next-auth/middleware';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+
+const DEMO_MODE = process.env.DEMO_MODE === 'true';
 
 // Routes that don't require authentication
 const publicRoutes = [
@@ -32,22 +34,23 @@ function isPublicRoute(pathname: string): boolean {
   return publicRoutes.some((route) => pathname.startsWith(route));
 }
 
-export default withAuth(
+function demoMiddleware(req: NextRequest) {
+  // In demo mode, redirect /login to /dashboard
+  if (req.nextUrl.pathname === '/login') {
+    return NextResponse.redirect(new URL('/dashboard', req.url));
+  }
+  return NextResponse.next();
+}
+
+const authMiddleware = withAuth(
   function middleware(req) {
-    // Allow all requests - auth check is handled by withAuth
     return NextResponse.next();
   },
   {
     callbacks: {
       authorized: ({ token, req }) => {
         const { pathname } = req.nextUrl;
-
-        // Allow public routes
-        if (isPublicRoute(pathname)) {
-          return true;
-        }
-
-        // Require token for protected routes
+        if (isPublicRoute(pathname)) return true;
         return !!token;
       },
     },
@@ -56,6 +59,8 @@ export default withAuth(
     },
   }
 );
+
+export default DEMO_MODE ? demoMiddleware : authMiddleware;
 
 export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
