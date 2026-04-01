@@ -10,6 +10,7 @@ const nextConfig = {
   },
   experimental: {
     workerThreads: false,
+    missingSuspenseWithCSRBailout: false,
   },
   async headers() {
     return [

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { ReactNode } from 'react';
 import { getSession, ensureUser } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
