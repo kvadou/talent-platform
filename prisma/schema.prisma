@@ -1,0 +1,2466 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  HQ_ADMIN
+  MARKET_ADMIN
+  RECRUITER
+  HIRING_MANAGER
+}
+
+enum JobStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  ARCHIVED
+}
+
+enum ApplicationStatus {
+  ACTIVE
+  HIRED
+  REJECTED
+  WITHDRAWN
+}
+
+enum InterviewType {
+  PHONE_SCREEN
+  VIDEO_INTERVIEW
+  VIDEO_INTERVIEW_AUDITION
+  TECHNICAL_INTERVIEW
+  BEHAVIORAL_INTERVIEW
+  FINAL_INTERVIEW
+  ONSITE
+  IN_PERSON
+}
+
+enum RecordingStatus {
+  PENDING
+  DOWNLOADING
+  TRANSCRIBING
+  ANALYZING
+  READY
+  FAILED
+}
+
+enum OverallRecommendation {
+  STRONG_NO
+  NO
+  YES
+  STRONG_YES
+}
+
+enum MessageType {
+  EMAIL
+  SMS
+}
+
+enum MessageStatus {
+  SENT
+  FAILED
+  BOUNCED
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum EmailTemplateScope {
+  GLOBAL
+  JOB
+  STAGE
+}
+
+enum SequenceStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  CANCELLED
+}
+
+enum SchedulingLinkStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
+enum AvailabilityLinkStatus {
+  PENDING // Awaiting candidate response
+  SUBMITTED // Candidate submitted availability
+  SCHEDULED // Interview scheduled from availability
+  EXPIRED // Link expired
+  CANCELLED // Link cancelled
+}
+
+enum ScoringType {
+  SCALE // 1-5 rating
+  BOOLEAN // Yes/No
+  TEXT // Open text
+}
+
+enum HireRecommendation {
+  STRONG_HIRE
+  HIRE
+  NO_HIRE
+  STRONG_NO_HIRE
+}
+
+enum OfferStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  SENT
+  ACCEPTED
+  DECLINED
+  EXPIRED
+  CANCELLED
+}
+
+enum CompensationType {
+  HOURLY
+  SALARY
+  CONTRACT
+}
+
+enum ActivityType {
+  APPLICATION_CREATED
+  STAGE_CHANGE
+  EMAIL_SENT
+  NOTE_ADDED
+  INTERVIEW_SCHEDULED
+  INTERVIEW_COMPLETED
+  FEEDBACK_SUBMITTED
+  OFFER_CREATED
+  OFFER_SENT
+  OFFER_ACCEPTED
+  OFFER_DECLINED
+  TASK_CREATED
+  TASK_COMPLETED
+  DOCUMENT_UPLOADED
+  STATUS_CHANGE
+}
+
+// === Job Detail Page Enums ===
+
+enum OpeningStatus {
+  PENDING
+  OPEN
+  FILLED
+  CLOSED
+}
+
+// === Scheduling System Enums ===
+
+enum MeetingLocationType {
+  PHONE
+  GOOGLE_MEET
+  ZOOM
+  IN_PERSON
+  CUSTOM
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum MeetingLimitPeriod {
+  DAY
+  WEEK
+  MONTH
+}
+
+enum HiringTeamRole {
+  HIRING_MANAGER
+  RECRUITER
+  COORDINATOR
+  SOURCER
+  INTERVIEWER
+}
+
+enum JobNotificationType {
+  NEW_APPLICANT
+  NEW_INTERNAL_APPLICANT
+  NEW_REFERRAL
+  NEW_AGENCY_SUBMISSION
+  SCORECARD_REMINDER
+  NEW_SCORECARD
+  OFFER_APPROVED
+  CANDIDATE_STAGE_CHANGE
+  WEEKLY_RECRUITING_REPORT
+}
+
+enum JobBoardType {
+  INTERNAL
+  INDEED
+  LINKEDIN
+  GOOGLE_JOBS
+  GLASSDOOR
+  ZIPRECRUITER
+  OTHER
+}
+
+enum JobPostStatus {
+  DRAFT
+  LIVE
+  PAUSED
+  EXPIRED
+  CLOSED
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  TEMPORARY
+}
+
+enum StageRuleAction {
+  SEND_EMAIL
+  SEND_SCHEDULING_LINK
+  CREATE_TASK
+  TAG_CANDIDATE
+  START_SEQUENCE
+  SET_SLA
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum CandidateSource {
+  CAREER_PAGE
+  LINKEDIN
+  INDEED
+  REFERRAL
+  AGENCY
+  OTHER
+}
+
+enum QuestionType {
+  TEXT // Short text input
+  TEXTAREA // Long text (experience questions)
+  SELECT // Dropdown selection
+  BOOLEAN // Yes/No checkbox
+  URL // LinkedIn/Portfolio URL
+}
+
+// Email template types matching Greenhouse categories
+enum EmailTemplateType {
+  APPLICATION_RECEIVED // Thank you for applying
+  APPLICATION_REJECTION // Candidate rejection
+  AVAILABILITY_REQUEST // Request candidate availability
+  INTERVIEW_CONFIRMATION // Confirm scheduled interview
+  INTERVIEW_REMINDER // Reminder before interview
+  INTERVIEW_CANCELLATION // Interview cancelled
+  INTERVIEW_RESCHEDULE // Interview rescheduled
+  SCHEDULING_LINK // Self-scheduling link
+  STAGE_CHANGE // Candidate moved to new stage
+  OFFER_EXTENDED // Job offer sent
+  OFFER_ACCEPTED // Offer acceptance confirmation
+  OFFER_DECLINED // Offer declined response
+  SCORECARD_REMINDER // Interviewer scorecard due
+  INTERVIEWER_INVITE // Invite interviewer to interview
+  REFERRAL_RECEIPT // Referral acknowledgement
+  CUSTOM // Custom template
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Career Site Settings
+  careerSiteUrl          String? // Custom domain for careers page
+  careerSiteLogo         String? // URL to logo image
+  careerSitePrimaryColor String? @default("#7C3AED")
+  careerSiteHeadline     String? @default("Join Our Team")
+  careerSiteDescription  String? @default("We're looking for talented people to join our team.")
+
+  // Email Settings
+  emailDomain         String? // Verified domain (e.g., acmetalent.com)
+  emailDomainVerified Boolean @default(false)
+  emailFromAddress    String? // Default from address
+  emailReplyToAddress String? // Reply-to address
+
+  // AI Tools Settings
+  aiEmailEditor          Boolean @default(true) // AI-assisted email writing
+  aiInterviewQuestions   Boolean @default(true) // Interview question suggestions
+  aiJobNoteSummaries     Boolean @default(true) // Summarize job notes
+  aiJobDescriptions      Boolean @default(true) // Generate job post descriptions
+  aiKeywordSuggestions   Boolean @default(true) // Keyword suggestions for searches
+  aiOfferForecast        Boolean @default(false) // Offer acceptance forecasting
+  aiReportBuilder        Boolean @default(false) // AI-assisted report generation
+  aiScorecardSuggestions Boolean @default(true) // Scorecard criteria suggestions
+
+  markets            Market[]
+  users              User[]
+  departments        Department[]
+  offices            Office[]
+  scorecardTemplates ScorecardTemplate[]
+  meetingTypes       MeetingType[]
+  scheduledMeetings  ScheduledMeeting[]
+}
+
+model Department {
+  id             String       @id @default(cuid())
+  name           String
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  jobs Job[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model Office {
+  id             String       @id @default(cuid())
+  name           String
+  location       String? // City, State
+  timezone       String?
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  jobs Job[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model Market {
+  id             String       @id @default(cuid())
+  name           String
+  slug           String       @unique
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  jobs  Job[]
+  users UserMarket[]
+}
+
+model User {
+  id                 String       @id @default(cuid())
+  email              String       @unique
+  clerkUserId        String?      @unique
+  firstName          String
+  lastName           String
+  passwordHash       String?
+  role               UserRole     @default(RECRUITER)
+  organizationId     String
+  organization       Organization @relation(fields: [organizationId], references: [id])
+  schedulingUsername String?      @unique // For public scheduling URLs like /schedule/doug/meeting-type
+  timezone           String?      @default("America/Chicago")
+  profileImageUrl    String?      // Google profile photo URL
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  marketAccess         UserMarket[]
+  notes                Note[]
+  candidateNotes       CandidateNote[]             @relation("CandidateNoteAuthor")
+  interviews           Interview[]                 @relation("UserInterviews")
+  tasksAssigned        Task[]                      @relation("TaskAssignee")
+  calendarIntegrations CalendarIntegration[]       @relation("CalendarIntegration")
+  activityLogs         ActivityLog[]
+  hiringTeamRoles      JobHiringTeam[]
+  interviewFeedback    InterviewFeedback[]         @relation("UserFeedback")
+  notificationPrefs    UserNotificationPreference?
+  interviewerGroups    InterviewerGroupMember[]
+
+  // Scheduling system
+  meetingTypes          MeetingType[]           @relation("MeetingTypes")
+  recruiterAvailability RecruiterAvailability[] @relation("RecruiterAvailability")
+  scheduleExceptions    ScheduleException[]     @relation("ScheduleExceptions")
+  schedulingPreferences SchedulingPreferences?  @relation("SchedulingPreferences")
+
+  // Interview Kit scorecards
+  interviewKitScorecards InterviewKitScorecard[] @relation("InterviewKitScorecards")
+
+  // Phase 6: Team Collaboration
+  interviewComments  InterviewComment[]  @relation("InterviewComments")
+  interviewBookmarks InterviewBookmark[] @relation("InterviewBookmarks")
+  interviewClips     InterviewClip[]     @relation("InterviewClips")
+
+  // Phase 8: Pattern Extraction
+  verifiedPatterns   InterviewPattern[]      @relation("VerifiedPatterns")
+  verifiedQAExamples QuestionAnswerExample[] @relation("VerifiedQAExamples")
+
+  // Phase 9: Async Text Screening
+  screeningReviews AIScreeningSession[] @relation("ScreeningReviewer")
+
+  // Public scheduling
+  hostedMeetings ScheduledMeeting[] @relation("HostedMeetings")
+}
+
+model UserMarket {
+  id        String   @id @default(cuid())
+  userId    String
+  marketId  String
+  user      User     @relation(fields: [userId], references: [id])
+  market    Market   @relation(fields: [marketId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, marketId])
+  @@index([marketId])
+}
+
+model Job {
+  id              String    @id @default(cuid())
+  title           String
+  description     String?   @db.Text
+  location        String?
+  marketId        String
+  market          Market    @relation(fields: [marketId], references: [id])
+  greenhouseJobId String?   @unique
+  linkedinJobId   String?   @unique // LinkedIn Easy Apply integration
+  status          JobStatus @default(DRAFT)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // AI Matching
+  embedding          Unsupported("vector(1536)")? // OpenAI text-embedding-3-small vector
+  embeddingUpdatedAt DateTime? // Track when embedding was last updated
+
+  // New Job Detail fields
+  departmentId        String?
+  department          Department?        @relation(fields: [departmentId], references: [id])
+  officeId            String?
+  office              Office?            @relation(fields: [officeId], references: [id])
+  requisitionId       String?           @unique // Display ID like "REQ-130"
+  employmentType      EmploymentType     @default(FULL_TIME)
+  openDate            DateTime           @default(now())
+  closeDate           DateTime?
+  internalJobName     String? // Internal name (can differ from title)
+  scorecardTemplateId String?
+  scorecardTemplate   ScorecardTemplate? @relation("JobScorecardTemplate", fields: [scorecardTemplateId], references: [id])
+  scorecardOverrides  Json? // Job-specific scorecard customizations
+
+  // Interview recording defaults
+  defaultRecordingEnabled Boolean @default(true) // Default recording setting for new interviews
+
+  // E-Sign integration
+  esignTemplateId String? // Default E-Sign template ID for sending offers
+
+  // Existing relations
+  applications        Application[]
+  stages              Stage[]
+  tasks               Task[]
+  slaConfigs          SlaConfig[]
+  emailTemplates      EmailTemplate[]
+  stageRules          StageRule[]
+  interviewScorecards InterviewScorecard[]
+  questions           JobQuestion[]
+
+  // New relations
+  openings            JobOpening[]
+  hiringTeam          JobHiringTeam[]
+  notificationConfigs JobNotificationConfig[]
+  posts               JobPost[]
+  forms               JobForm[]
+  matchingKeywords    JobKeyword[]
+  interviewKits       InterviewKit[]
+
+  // Phase 8: Pattern Extraction
+  patterns   InterviewPattern[]
+  qaExamples QuestionAnswerExample[]
+
+  // Phase 9: Async Text Screening
+  screeningQuestionSets ScreeningQuestionSet[]
+
+  // Auto-advance settings (move high-scoring candidates automatically)
+  autoAdvanceEnabled   Boolean @default(false)
+  autoAdvanceMinScore  Int     @default(85) // Minimum score (0-100) to trigger auto-advance
+  autoAdvanceToStageId String?
+  autoAdvanceToStage   Stage?  @relation("AutoAdvanceStage", fields: [autoAdvanceToStageId], references: [id])
+
+  @@index([marketId])
+  @@index([status])
+  @@index([linkedinJobId])
+  @@index([departmentId])
+  @@index([officeId])
+}
+
+// Custom screening questions per job (like Greenhouse custom questions)
+model JobQuestion {
+  id                   String       @id @default(cuid())
+  jobId                String
+  job                  Job          @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  greenhouseQuestionId String?      @unique // Greenhouse question ID for sync
+  label                String // "Are you 18 years old or older?"
+  type                 QuestionType @default(TEXT)
+  options              String[] // For SELECT type: ["Yes", "No"]
+  required             Boolean      @default(false)
+  order                Int          @default(0)
+  helpText             String?      @db.Text // Description below the question
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+
+  answers ApplicationAnswer[]
+
+  @@index([jobId])
+  @@index([order])
+  @@index([greenhouseQuestionId])
+}
+
+// Keywords for AI-powered candidate matching
+model JobKeyword {
+  id         String   @id @default(cuid())
+  jobId      String
+  job        Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  keyword    String // Primary keyword e.g., "actor"
+  expansions String[] // AI-suggested synonyms e.g., ["actress", "performer", "entertainer"]
+  weight     Int      @default(5) // Importance 1-10
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([jobId, keyword])
+  @@index([jobId])
+}
+
+// Cached match scores between jobs and candidates
+model JobCandidateMatch {
+  id          String @id @default(cuid())
+  jobId       String
+  candidateId String
+
+  // Matching scores (0-100 scale)
+  keywordScore   Float? // Score from keyword matching (text search)
+  embeddingScore Float? // Score from vector similarity (semantic)
+  combinedScore  Float // Weighted combination of scores
+
+  // Component details for debugging/transparency
+  matchedKeywords Json? // {keyword: count, ...}
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([jobId, candidateId])
+  @@index([jobId])
+  @@index([candidateId])
+  @@index([combinedScore])
+}
+
+model Stage {
+  id                    String         @id @default(cuid())
+  jobId                 String
+  job                   Job            @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  name                  String
+  /// order is reserved keyword
+  order                 Int
+  isDefault             Boolean        @default(false)
+  defaultInterviewType  InterviewType?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+
+  applications      Application[]
+  stageHistory      StageHistory[]
+  tasks             Task[]
+  slaConfigs        SlaConfig[]
+  emailTemplates    EmailTemplate[]
+  stageRules        StageRule[]
+  schedulingLinks   SchedulingLink[]
+  availabilityLinks AvailabilityLink[]
+  forms             JobForm[]
+  interviewKits     InterviewKit[]
+  autoAdvanceJobs   Job[]            @relation("AutoAdvanceStage")
+
+  @@unique([jobId, order])
+  @@index([jobId])
+}
+
+model Candidate {
+  id                    String                       @id @default(cuid())
+  email                 String
+  secondaryEmail        String?
+  firstName             String
+  lastName              String
+  phone                 String?
+  resumeUrl             String?
+  resumeText            String?                      @db.Text // Extracted text from resume PDF
+  searchVector          Unsupported("tsvector")? // PostgreSQL full-text search vector
+  embedding             Unsupported("vector(1536)")? // OpenAI text-embedding-3-small vector
+  embeddingUpdatedAt    DateTime? // Track when embedding was last updated
+  coverLetter           String?                      @db.Text
+  linkedinUrl           String?
+  portfolioUrl          String?
+  street                String?
+  city                  String?
+  state                 String?
+  country               String?                      @default("United States")
+  postcode              String?
+  timezone              String?
+  notes                 String?                      @db.Text
+  tags                  String[]
+  source                CandidateSource?             @default(CAREER_PAGE)
+  sourceDetails         String? // e.g., "John Doe referral", "LinkedIn post #123"
+  greenhouseCandidateId String?                      @unique
+  createdAt             DateTime                     @default(now())
+  updatedAt             DateTime                     @updatedAt
+
+  // Import tracking
+  importedToContractors Boolean   @default(false)
+  contractorId          Int?      @unique
+  importedAt            DateTime?
+  importNotes           String?   @db.Text
+
+  applications     Application[]
+  candidateNotes   CandidateNote[]
+  activityLogs     ActivityLog[]
+  backgroundChecks BackgroundCheck[]
+
+  @@index([email])
+  @@index([source])
+  @@index([searchVector], type: Gin)
+}
+
+// Background check via Checkr API
+model BackgroundCheck {
+  id          String    @id @default(cuid())
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  // Checkr IDs
+  checkrInvitationId String? @unique // Checkr's invitation ID (for invitation flow)
+  checkrCandidateId  String? // Checkr's candidate ID
+  checkrReportId     String? @unique // Checkr's report ID
+
+  // Check details
+  package     String // "tasker_standard", "driver_pro", etc.
+  status      String @default("pending") // pending, processing, complete, canceled, suspended
+  result      String? // null, clear, consider
+  adjudication String? // engaged, adverse_action, null
+
+  // Report access
+  reportUrl   String?
+  completedAt DateTime?
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([candidateId])
+  @@index([checkrInvitationId])
+  @@index([checkrReportId])
+  @@index([status])
+}
+
+model Application {
+  id                      String            @id @default(cuid())
+  jobId                   String
+  job                     Job               @relation(fields: [jobId], references: [id])
+  candidateId             String
+  candidate               Candidate         @relation(fields: [candidateId], references: [id])
+  stageId                 String
+  stage                   Stage             @relation(fields: [stageId], references: [id])
+  status                  ApplicationStatus @default(ACTIVE)
+  source                  String? // Source: LINKEDIN, INDEED, DIRECT, GREENHOUSE, etc.
+  greenhouseApplicationId String?           @unique
+  linkedinApplicationId   String?           @unique // LinkedIn Easy Apply application ID
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  appliedAt               DateTime?         // When the candidate actually applied (from Greenhouse/source)
+
+  // AI Candidate Scoring
+  aiScore          Int?      // Overall score 0-100
+  aiScoreBreakdown Json?     // Component scores: { resumeFit, answerCompleteness, answerQuality, ... }
+  aiScoredAt       DateTime? // When the score was last calculated
+
+  stageHistory      StageHistory[]
+  interviews        Interview[]
+  notes             Note[]
+  messages          MessageLog[]
+  tasks             Task[]
+  slaBreaches       SlaBreach[]
+  sequenceInstances SequenceInstance[]
+  schedulingLinks   SchedulingLink[]
+  availabilityLinks AvailabilityLink[]
+  offer             Offer?
+  answers           ApplicationAnswer[]
+  portalTokens      ApplicationToken[]
+  activityLogs      ActivityLog[]
+
+  // New relations for Job Detail pages
+  hiredForOpening JobOpening?       @relation("HiredOpening")
+  formResponses   JobFormResponse[]
+
+  // Phase 7: Learning Foundation
+  hiringOutcome HiringOutcome?
+
+  // Phase 9: Async Text Screening
+  screeningSessions AIScreeningSession[]
+
+  // External tutoring platform integration
+  sttUserId String? // User ID in the external system after onboarding
+
+  // Candidate portal engagement tracking
+  engagement CandidateEngagement?
+
+  @@index([jobId])
+  @@index([candidateId])
+  @@index([stageId])
+  @@index([status])
+  @@index([source])
+  @@index([aiScore])
+  @@index([appliedAt])
+  @@unique([candidateId, jobId])
+}
+
+// Token for candidate portal access (no login required)
+model ApplicationToken {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  token         String      @unique
+  createdAt     DateTime    @default(now())
+  expiresAt     DateTime?
+
+  @@index([applicationId])
+  @@index([token])
+}
+
+// Tracks candidate engagement with their status portal
+model CandidateEngagement {
+  id            String      @id @default(cuid())
+  applicationId String      @unique
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  // Page view tracking
+  totalViews         Int      @default(0)
+  lastViewedAt       DateTime?
+  uniqueViewDays     Int      @default(0)  // Number of distinct days they checked
+
+  // Time tracking (in seconds)
+  totalTimeSpent     Int      @default(0)
+
+  // Chess puzzle engagement
+  puzzlesAttempted   Int      @default(0)
+  puzzlesSolved      Int      @default(0)
+  puzzleBestStreak   Int      @default(0)  // Best consecutive correct answers
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([applicationId])
+}
+
+// Candidate's answers to job-specific screening questions
+model ApplicationAnswer {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  questionId    String
+  question      JobQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  value         String      @db.Text
+  createdAt     DateTime    @default(now())
+
+  @@unique([applicationId, questionId])
+  @@index([applicationId])
+  @@index([questionId])
+}
+
+model StageHistory {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  stageId       String
+  stage         Stage       @relation(fields: [stageId], references: [id])
+  movedAt       DateTime    @default(now())
+  movedBy       String?
+
+  @@index([applicationId])
+  @@index([movedAt])
+}
+
+model Interview {
+  id               String              @id @default(cuid())
+  applicationId    String
+  application      Application         @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  interviewerId    String
+  interviewer      User                @relation("UserInterviews", fields: [interviewerId], references: [id])
+  scorecardId      String?
+  scorecard        InterviewScorecard? @relation(fields: [scorecardId], references: [id], onDelete: SetNull)
+  scheduledAt      DateTime
+  duration         Int
+  type             InterviewType
+  location         String?
+  meetingLink      String?
+  notes            String?             @db.Text
+  rating           Int?
+  googleEventId    String? // For updating/canceling Google Calendar events
+  zoomMeetingId    String? // For updating/canceling Zoom meetings
+  recordingEnabled Boolean             @default(true) // Enable auto-recording for this interview
+  confirmationSent Boolean             @default(false)
+  reminderSent     Boolean             @default(false)
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  feedback InterviewFeedback[]
+
+  // Interview Kit relations
+  recording     InterviewRecording?
+  aiSummary     InterviewAISummary?
+  kitScorecards InterviewKitScorecard[]
+
+  // Phase 7: AI Feedback
+  aiFeedback AIRecommendationFeedback[]
+
+  @@index([applicationId])
+  @@index([scheduledAt])
+  @@index([scorecardId])
+}
+
+model Note {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  authorId      String
+  author        User        @relation(fields: [authorId], references: [id])
+  content       String      @db.Text
+  isPrivate     Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([applicationId])
+  @@index([createdAt])
+}
+
+model CandidateNote {
+  id          String    @id @default(cuid())
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  authorId    String
+  author      User      @relation("CandidateNoteAuthor", fields: [authorId], references: [id])
+  content     String    @db.Text
+  isPrivate   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([candidateId])
+  @@index([createdAt])
+}
+
+model MessageLog {
+  id                String        @id @default(cuid())
+  applicationId     String
+  application       Application   @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  type              MessageType
+  recipient         String
+  subject           String?
+  body              String?       @db.Text
+  sentAt            DateTime      @default(now())
+  status            MessageStatus @default(SENT)
+  errorMessage      String?       @db.Text
+  // Email tracking
+  postmarkMessageId String?       @unique
+  openedAt          DateTime?
+  clickedAt         DateTime?
+  bouncedAt         DateTime?
+
+  @@index([applicationId])
+  @@index([sentAt])
+  @@index([postmarkMessageId])
+}
+
+model IntegrationToken {
+  id         String    @id @default(cuid())
+  service    String
+  tokenType  String
+  tokenValue String    @db.Text
+  expiresAt  DateTime?
+  metadata   Json?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([service])
+}
+
+// Enterprise ATS Models
+
+model Task {
+  id            String       @id @default(cuid())
+  applicationId String?
+  application   Application? @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  jobId         String?
+  job           Job?         @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  stageId       String?
+  stage         Stage?       @relation(fields: [stageId], references: [id], onDelete: SetNull)
+  title         String
+  description   String?      @db.Text
+  assigneeId    String
+  assignee      User         @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  status        TaskStatus   @default(PENDING)
+  priority      TaskPriority @default(MEDIUM)
+  dueAt         DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([applicationId])
+  @@index([jobId])
+  @@index([stageId])
+  @@index([assigneeId])
+  @@index([status])
+  @@index([dueAt])
+}
+
+model SlaConfig {
+  id              String   @id @default(cuid())
+  stageId         String?  @unique
+  stage           Stage?   @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  jobId           String?
+  job             Job?     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  targetDays      Int      @default(3)
+  warningDays     Int      @default(2)
+  isGlobalDefault Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  slaBreaches SlaBreach[]
+
+  @@index([stageId])
+  @@index([jobId])
+}
+
+model SlaBreach {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  slaConfigId   String
+  slaConfig     SlaConfig   @relation(fields: [slaConfigId], references: [id])
+  breachedAt    DateTime    @default(now())
+  resolvedAt    DateTime?
+  createdAt     DateTime    @default(now())
+
+  @@index([applicationId])
+  @@index([breachedAt])
+}
+
+model EmailTemplate {
+  id          String             @id @default(cuid())
+  name        String
+  type        EmailTemplateType  @default(CUSTOM)
+  description String?            @db.Text
+  subject     String
+  body        String             @db.Text
+  scope       EmailTemplateScope @default(GLOBAL)
+  jobId       String?
+  job         Job?               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  stageId     String?
+  stage       Stage?             @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  isDefault   Boolean            @default(false)
+  mergeFields Json? // Available merge fields metadata
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  stageRules StageRule[]
+
+  @@index([scope])
+  @@index([type])
+  @@index([jobId])
+  @@index([stageId])
+}
+
+model StageRule {
+  id               String           @id @default(cuid())
+  stageId          String
+  stage            Stage            @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  trigger          String // "onEnter" | "onExit" | "onSlaBreach"
+  actionType       String // Legacy: "sendEmail" | "createTask" | "setSla" | "tagCandidate" | "startSequence"
+  actionTypeEnum   StageRuleAction? // New enum-based action type
+  emailTemplateId  String?
+  emailTemplate    EmailTemplate?   @relation(fields: [emailTemplateId], references: [id], onDelete: SetNull)
+  taskTemplate     Json? // Task template data
+  slaOverride      Json? // SLA override config
+  tags             String[]
+  sequenceId       String?
+  sequence         Sequence?        @relation(fields: [sequenceId], references: [id], onDelete: SetNull)
+  schedulingConfig Json? // For scheduling link action: {duration, interviewerIds, bufferBefore, bufferAfter}
+  isActive         Boolean          @default(true)
+  order            Int              @default(0)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  Job              Job?             @relation(fields: [jobId], references: [id])
+  jobId            String?
+
+  @@index([stageId])
+  @@index([isActive])
+}
+
+model Sequence {
+  id          String   @id @default(cuid())
+  name        String
+  description String?  @db.Text
+  steps       Json // Array of {delay: number, templateId: string, cancelOnReply: boolean}
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  stageRules StageRule[]
+  instances  SequenceInstance[]
+}
+
+model SequenceInstance {
+  id            String         @id @default(cuid())
+  sequenceId    String
+  sequence      Sequence       @relation(fields: [sequenceId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application    @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  status        SequenceStatus @default(ACTIVE)
+  currentStep   Int            @default(0)
+  nextSendAt    DateTime?
+  completedAt   DateTime?
+  cancelledAt   DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([applicationId])
+  @@index([sequenceId])
+  @@index([status])
+  @@index([nextSendAt])
+}
+
+model SchedulingLink {
+  id             String               @id @default(cuid())
+  applicationId  String
+  application    Application          @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  stageId        String
+  stage          Stage                @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  token          String               @unique
+  interviewerIds String[] // Array of user IDs
+  duration       Int                  @default(30) // minutes
+  bufferBefore   Int                  @default(15) // minutes
+  bufferAfter    Int                  @default(15) // minutes
+  minNoticeHours Int                  @default(24)
+  maxDaysOut     Int                  @default(30)
+  timezone       String?              @default("America/Chicago")
+  status         SchedulingLinkStatus @default(ACTIVE)
+  expiresAt      DateTime?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  // Optional link to meeting type template
+  meetingTypeId String?
+  meetingType   MeetingType? @relation("MeetingTypeSchedulingLinks", fields: [meetingTypeId], references: [id], onDelete: SetNull)
+
+  // Location settings (can override meeting type)
+  locationType    MeetingLocationType?
+  locationDetails String?
+  googleMeetLink  String? // Auto-generated Google Meet link
+  zoomLink        String? // Zoom meeting link
+
+  @@index([applicationId])
+  @@index([stageId])
+  @@index([token])
+  @@index([status])
+  @@index([meetingTypeId])
+}
+
+// Availability collection link (Greenhouse-style)
+// Candidate submits their available time windows, hiring team picks
+model AvailabilityLink {
+  id             String                 @id @default(cuid())
+  applicationId  String
+  application    Application            @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  stageId        String
+  stage          Stage                  @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  token          String                 @unique
+  interviewerIds String[] // Interviewers who need to be free
+  duration       Int                    @default(60) // Interview duration in minutes
+  timezone       String?                @default("America/Chicago")
+  status         AvailabilityLinkStatus @default(PENDING)
+  instructions   String?                @db.Text // Custom instructions for candidate
+  dateRangeStart DateTime? // Optional: limit date range
+  dateRangeEnd   DateTime?
+  expiresAt      DateTime?
+  submittedAt    DateTime? // When candidate submitted availability
+  scheduledAt    DateTime? // When interview was scheduled from this
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+
+  availabilities CandidateAvailability[]
+
+  @@index([applicationId])
+  @@index([stageId])
+  @@index([token])
+  @@index([status])
+}
+
+// Individual availability windows submitted by candidate
+model CandidateAvailability {
+  id                 String           @id @default(cuid())
+  availabilityLinkId String
+  availabilityLink   AvailabilityLink @relation(fields: [availabilityLinkId], references: [id], onDelete: Cascade)
+  startTime          DateTime
+  endTime            DateTime
+  note               String? // Optional note from candidate
+  createdAt          DateTime         @default(now())
+
+  @@index([availabilityLinkId])
+  @@index([startTime])
+}
+
+model CalendarIntegration {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation("CalendarIntegration", fields: [userId], references: [id], onDelete: Cascade)
+  provider     String    @default("google")
+  accessToken  String    @db.Text
+  refreshToken String?   @db.Text
+  expiresAt    DateTime?
+  calendarId   String?
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([userId, provider])
+  @@index([userId])
+}
+
+// === Enhanced Scheduling System ===
+
+// Reusable meeting type templates (like Calendly event types)
+model MeetingType {
+  id             String       @id @default(cuid())
+  userId         String
+  user           User         @relation("MeetingTypes", fields: [userId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Basic settings
+  name        String // e.g., "30 Minute Phone Screen"
+  slug        String // URL-friendly slug
+  description String? @db.Text
+  duration    Int     @default(30) // minutes
+  color       String? @default("#3b82f6") // for calendar display
+  isActive    Boolean @default(true)
+
+  // Location settings
+  locationType      MeetingLocationType @default(PHONE)
+  locationDetails   String? // Phone number, address, or custom location
+  googleMeetEnabled Boolean             @default(false)
+  zoomEnabled       Boolean             @default(false)
+  zoomLink          String? // If using personal Zoom link
+
+  // Scheduling options
+  bufferBefore   Int @default(5) // minutes
+  bufferAfter    Int @default(5) // minutes
+  minNoticeHours Int @default(24) // minimum advance notice
+  maxDaysOut     Int @default(30) // how far in future to allow
+  slotIncrement  Int @default(30) // time slot increments (15, 30, 60 min)
+
+  // Limits
+  maxPerDay   Int? // max meetings per day
+  maxPerWeek  Int? // max meetings per week
+  maxPerMonth Int? // max meetings per month
+
+  // Custom questions for invitee
+  customQuestions Json? // [{id, question, answerType, required, options?}]
+
+  // Notifications
+  sendConfirmation Boolean @default(true)
+  sendReminder     Boolean @default(true)
+  reminderHours    Int     @default(24) // hours before meeting
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  schedulingLinks    SchedulingLink[]    @relation("MeetingTypeSchedulingLinks")
+  scheduledMeetings  ScheduledMeeting[]
+
+  @@unique([userId, slug])
+  @@index([userId])
+  @@index([organizationId])
+  @@index([isActive])
+}
+
+// Standalone public meeting bookings (no Application/Interview required)
+model ScheduledMeeting {
+  id             String       @id @default(cuid())
+  meetingTypeId  String
+  meetingType    MeetingType  @relation(fields: [meetingTypeId], references: [id], onDelete: Cascade)
+  hostId         String
+  host           User         @relation("HostedMeetings", fields: [hostId], references: [id])
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  // Invitee info (no login required)
+  inviteeName      String
+  inviteeEmail     String
+  inviteeTimezone  String?
+  notes            String?   @db.Text
+
+  // Scheduling
+  scheduledAt DateTime  // Stored in UTC
+  duration    Int       // minutes
+  timezone    String    // Recruiter's timezone at time of booking
+  location    String?
+  meetingLink String?
+
+  // Status
+  status       MeetingStatus @default(CONFIRMED)
+  cancelledAt  DateTime?
+  cancelReason String?
+
+  // Management
+  manageTokenHash  String?   @unique
+  rescheduledAt    DateTime?
+  rescheduledFrom  DateTime?
+
+  // Google Calendar sync
+  googleEventId String?
+  // Zoom meeting ID (for cancel/reschedule)
+  zoomMeetingId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hostId, scheduledAt])
+  @@index([meetingTypeId])
+  @@index([inviteeEmail])
+}
+
+enum MeetingStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+// Weekly availability schedule for a user (multiple slots per day supported)
+model RecruiterAvailability {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation("RecruiterAvailability", fields: [userId], references: [id], onDelete: Cascade)
+
+  dayOfWeek DayOfWeek
+  isEnabled Boolean   @default(true) // Is this day available?
+  startTime String // "09:00" in 24h format
+  endTime   String // "17:00" in 24h format
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Multiple slots per day allowed - no unique constraint on dayOfWeek
+  @@index([userId, dayOfWeek])
+  @@index([userId])
+}
+
+// Date-specific overrides for availability (holidays, special hours)
+model ScheduleException {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation("ScheduleExceptions", fields: [userId], references: [id], onDelete: Cascade)
+
+  date        DateTime @db.Date // The specific date
+  isAvailable Boolean  @default(false) // false = day off, true = available with custom hours
+  startTime   String? // If available, custom start time
+  endTime     String? // If available, custom end time
+  reason      String? // e.g., "Holiday", "Vacation", "Special hours"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+}
+
+// User's scheduling preferences
+model SchedulingPreferences {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation("SchedulingPreferences", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Default timezone
+  timezone String @default("America/Chicago")
+
+  // Use Calendly or custom scheduling
+  useCalendly  Boolean @default(false)
+  calendlyLink String? // External Calendly link if used
+
+  // Default buffer times (can be overridden per meeting type)
+  defaultBufferBefore Int @default(5)
+  defaultBufferAfter  Int @default(5)
+
+  // Availability display
+  showTimezoneToInvitee Boolean @default(true)
+  autoDetectTimezone    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// Interview Management Models
+
+model InterviewScorecard {
+  id             String        @id @default(cuid())
+  name           String
+  description    String?       @db.Text
+  type           InterviewType
+  criteria       Json // [{id: string, name: string, weight: number, scoringType: ScoringType, required: boolean, options?: string[]}]
+  jobId          String?
+  job            Job?          @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  organizationId String
+  isDefault      Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  interviews Interview[]
+
+  @@index([jobId])
+  @@index([organizationId])
+  @@index([type])
+}
+
+model InterviewFeedback {
+  id             String              @id @default(cuid())
+  interviewId    String
+  interview      Interview           @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User                @relation("UserFeedback", fields: [userId], references: [id])
+  scores         Json // {criteriaId: score/value}
+  recommendation HireRecommendation?
+  strengths      String?             @db.Text
+  weaknesses     String?             @db.Text
+  notes          String?             @db.Text
+  submittedAt    DateTime            @default(now())
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@index([interviewId])
+  @@index([userId])
+}
+
+// Offer Management Models
+
+model Offer {
+  id            String      @id @default(cuid())
+  applicationId String      @unique
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  jobId         String
+
+  // Compensation - supports hourly contractors and salaried employees
+  compensationType CompensationType @default(HOURLY)
+  hourlyRate       Decimal?         @db.Decimal(10, 2)
+  salary           Decimal?         @db.Decimal(12, 2)
+  salaryFrequency  String? // ANNUALLY, MONTHLY, WEEKLY
+  currency         String           @default("USD")
+  signOnBonus      Decimal?         @db.Decimal(12, 2)
+  equity           String? // e.g., "0.5% equity"
+  bonus            Decimal?         @db.Decimal(12, 2)
+  benefits         String?          @db.Text
+
+  // Employment details
+  employmentType String    @default("CONTRACTOR") // FULL_TIME, PART_TIME, CONTRACTOR
+  startDate      DateTime?
+  expiresAt      DateTime?
+
+  // Hiring manager
+  hiringManagerId String?
+
+  // Status & versioning
+  status  OfferStatus @default(DRAFT)
+  version Int         @default(1)
+
+  // Documents
+  letterUrl String? // PDF url
+  signedUrl String? // Signed offer URL
+
+  // External integrations
+  dropboxSignRequestId String? // Dropbox Sign contract request (legacy)
+  esignDocumentId      String? // STC E-Sign document ID
+  checkrInvitationId   String? // Checkr background check
+
+  // Response
+  declineReason String? @db.Text
+
+  // Metadata
+  createdBy   String
+  createdAt   DateTime  @default(now())
+  sentAt      DateTime?
+  acceptedAt  DateTime?
+  declinedAt  DateTime?
+  respondedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  approvals OfferApproval[]
+
+  @@index([applicationId])
+  @@index([jobId])
+  @@index([status])
+}
+
+model OfferApproval {
+  id         String         @id @default(cuid())
+  offerId    String
+  offer      Offer          @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  userId     String
+  role       String // "hiring_manager", "finance", "legal", "executive"
+  status     ApprovalStatus @default(PENDING)
+  notes      String?        @db.Text
+  approvedAt DateTime?
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@index([offerId])
+  @@index([userId])
+  @@index([status])
+}
+
+// Activity Log for tracking all application events
+model ActivityLog {
+  id String @id @default(cuid())
+
+  // Context - can be application-specific or candidate-specific
+  applicationId String?
+  application   Application? @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  candidateId   String?
+  candidate     Candidate?   @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  // Activity details
+  type        ActivityType
+  title       String
+  description String?      @db.Text
+  metadata    Json? // Additional context (from/to stage, email subject, etc.)
+
+  // Who performed the action
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([applicationId])
+  @@index([candidateId])
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// === Job Detail Page Models ===
+
+model JobOpening {
+  id                 String        @id @default(cuid())
+  jobId              String
+  job                Job           @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  openingId          String // Display ID like "107", "108"
+  status             OpeningStatus @default(OPEN)
+  openDate           DateTime      @default(now())
+  targetStartDate    DateTime?
+  closeDate          DateTime?
+  closeReason        String?
+  hiredApplicationId String?       @unique // Links to who filled this opening
+  hiredApplication   Application?  @relation("HiredOpening", fields: [hiredApplicationId], references: [id])
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  @@unique([jobId, openingId])
+  @@index([jobId])
+  @@index([status])
+}
+
+model JobHiringTeam {
+  id                    String         @id @default(cuid())
+  jobId                 String
+  job                   Job            @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  userId                String
+  user                  User           @relation(fields: [userId], references: [id])
+  role                  HiringTeamRole
+  isResponsibleForTasks Boolean        @default(false)
+  permissions           String[] // Array of permission keys
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+
+  @@unique([jobId, userId, role])
+  @@index([jobId])
+  @@index([userId])
+}
+
+model JobNotificationConfig {
+  id         String              @id @default(cuid())
+  jobId      String
+  job        Job                 @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  type       JobNotificationType
+  recipients String[] // User IDs or role-based ("hiring_managers", "recruiters")
+  timing     String? // For reminders: "1_hour_after", "1_day_after"
+  isEnabled  Boolean             @default(true)
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  @@unique([jobId, type])
+  @@index([jobId])
+}
+
+model JobPost {
+  id           String        @id @default(cuid())
+  jobId        String
+  job          Job           @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  boardType    JobBoardType
+  boardName    String // "Indeed", "LinkedIn", "Company Career Page"
+  title        String? // Can differ from job title
+  content      String?       @db.Text // Candidate-facing description (can differ from job.description)
+  location     String? // Candidate-facing location (can differ from job.location)
+  externalUrl  String? // URL on the job board
+  externalId   String? // ID on external platform
+  status       JobPostStatus @default(DRAFT)
+  postedAt     DateTime?
+  expiresAt    DateTime?
+  applications Int           @default(0) // Track applications from this source
+  views        Int           @default(0) // Track views from this source
+  spend        Decimal?      @db.Decimal(10, 2) // For paid posts
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([jobId])
+  @@index([status])
+  @@index([boardType])
+}
+
+model ScorecardTemplate {
+  id             String       @id @default(cuid())
+  name           String
+  description    String?      @db.Text
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  categories     Json // [{id, name, attributes: [{id, name, weight, scoringType, required}]}]
+  isDefault      Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  jobs Job[] @relation("JobScorecardTemplate")
+
+  @@index([organizationId])
+}
+
+model JobForm {
+  id          String   @id @default(cuid())
+  jobId       String
+  job         Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  stageId     String
+  stage       Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  name        String
+  description String?  @db.Text
+  fields      Json // Form field definitions
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  responses JobFormResponse[]
+
+  @@index([jobId])
+  @@index([stageId])
+}
+
+model JobFormResponse {
+  id            String      @id @default(cuid())
+  formId        String
+  form          JobForm     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  responses     Json // {fieldId: value}
+  submittedAt   DateTime    @default(now())
+
+  @@unique([formId, applicationId])
+  @@index([formId])
+  @@index([applicationId])
+}
+
+// === User Notification Preferences ===
+
+enum NotificationChannel {
+  EMAIL
+  PUSH
+  SMS
+}
+
+model UserNotificationPreference {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Application notifications
+  newApplicationEmail Boolean @default(true)
+  newApplicationPush  Boolean @default(true)
+  newApplicationSms   Boolean @default(false)
+
+  applicationUpdateEmail Boolean @default(true)
+  applicationUpdatePush  Boolean @default(false)
+  applicationUpdateSms   Boolean @default(false)
+
+  // Interview notifications
+  interviewScheduledEmail Boolean @default(true)
+  interviewScheduledPush  Boolean @default(true)
+  interviewScheduledSms   Boolean @default(false)
+
+  interviewReminderEmail Boolean @default(true)
+  interviewReminderPush  Boolean @default(true)
+  interviewReminderSms   Boolean @default(true)
+
+  interviewFeedbackEmail Boolean @default(true)
+  interviewFeedbackPush  Boolean @default(false)
+  interviewFeedbackSms   Boolean @default(false)
+
+  // Task notifications
+  taskAssignedEmail Boolean @default(true)
+  taskAssignedPush  Boolean @default(true)
+  taskAssignedSms   Boolean @default(false)
+
+  taskDueEmail Boolean @default(true)
+  taskDuePush  Boolean @default(true)
+  taskDueSms   Boolean @default(false)
+
+  // Offer notifications
+  offerCreatedEmail Boolean @default(true)
+  offerCreatedPush  Boolean @default(false)
+  offerCreatedSms   Boolean @default(false)
+
+  offerAcceptedEmail Boolean @default(true)
+  offerAcceptedPush  Boolean @default(true)
+  offerAcceptedSms   Boolean @default(true)
+
+  offerDeclinedEmail Boolean @default(true)
+  offerDeclinedPush  Boolean @default(true)
+  offerDeclinedSms   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId])
+  @@index([userId])
+}
+
+// === Interviewer Groups ===
+
+model InterviewerGroup {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members InterviewerGroupMember[]
+}
+
+model InterviewerGroupMember {
+  id        String           @id @default(cuid())
+  groupId   String
+  group     InterviewerGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime         @default(now())
+
+  @@unique([groupId, userId])
+  @@index([groupId])
+  @@index([userId])
+}
+
+// === Recruiting Agencies ===
+
+model Agency {
+  id            String   @id @default(cuid())
+  name          String
+  contactName   String?
+  contactEmail  String?
+  contactPhone  String?
+  website       String?
+  feePercentage Decimal? @db.Decimal(5, 2) // e.g., 20.00 for 20%
+  notes         String?  @db.Text
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  recruiters AgencyRecruiter[]
+  candidates AgencyCandidate[]
+  jobs       AgencyJobAssignment[]
+}
+
+model AgencyRecruiter {
+  id        String   @id @default(cuid())
+  agencyId  String
+  agency    Agency   @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  firstName String
+  lastName  String
+  email     String
+  phone     String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  candidates AgencyCandidate[]
+
+  @@index([agencyId])
+  @@index([email])
+}
+
+// Track candidates submitted by agencies
+model AgencyCandidate {
+  id          String           @id @default(cuid())
+  agencyId    String
+  agency      Agency           @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  recruiterId String?
+  recruiter   AgencyRecruiter? @relation(fields: [recruiterId], references: [id], onDelete: SetNull)
+  candidateId String
+  jobId       String
+  status      String           @default("ACTIVE") // ACTIVE, HIRED, REJECTED
+  submittedAt DateTime         @default(now())
+  hiredAt     DateTime?
+  fee         Decimal?         @db.Decimal(12, 2) // Actual fee charged
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([agencyId, candidateId, jobId])
+  @@index([agencyId])
+  @@index([recruiterId])
+  @@index([candidateId])
+  @@index([jobId])
+}
+
+// Agency assigned to specific jobs
+model AgencyJobAssignment {
+  id        String   @id @default(cuid())
+  agencyId  String
+  agency    Agency   @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  jobId     String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@unique([agencyId, jobId])
+  @@index([agencyId])
+  @@index([jobId])
+}
+
+// === Approval Workflows ===
+
+enum ApprovalWorkflowType {
+  JOB_APPROVAL // Approval to start recruiting
+  OFFER_APPROVAL // Approval to extend an offer
+}
+
+model ApprovalWorkflow {
+  id          String               @id @default(cuid())
+  type        ApprovalWorkflowType
+  name        String
+  description String?              @db.Text
+  isActive    Boolean              @default(true)
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  steps ApprovalWorkflowStep[]
+}
+
+model ApprovalWorkflowStep {
+  id          String           @id @default(cuid())
+  workflowId  String
+  workflow    ApprovalWorkflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  order       Int
+  name        String // "Hiring Manager", "Finance", "Executive"
+  approverIds String[] // User IDs or role-based: ["role:HQ_ADMIN", "user:123"]
+  isRequired  Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([workflowId, order])
+  @@index([workflowId])
+}
+
+// === Offer Templates (Documents) ===
+
+model OfferTemplate {
+  id          String   @id @default(cuid())
+  name        String // "NYC/LA Tutor Offer Letter"
+  description String?  @db.Text
+  content     String   @db.Text // HTML content with merge tokens
+  mergeTokens String[] // Available tokens: ["{{CANDIDATE_NAME}}", "{{SALARY}}"]
+  isActive    Boolean  @default(true)
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// === Candidate Surveys ===
+
+enum SurveyQuestionType {
+  TEXT
+  TEXTAREA
+  SELECT
+  MULTI_SELECT
+  RATING // 1-5 star rating
+  YES_NO
+}
+
+model CandidateSurvey {
+  id           String   @id @default(cuid())
+  name         String // "Post-Interview Survey", "Candidate Experience Survey"
+  description  String?  @db.Text
+  isActive     Boolean  @default(true)
+  isDefault    Boolean  @default(false)
+  // When to send: after_application, after_interview, after_rejection, after_hire
+  triggerEvent String?  @default("after_application")
+  delayHours   Int      @default(24) // Hours after trigger to send
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  questions SurveyQuestion[]
+  responses SurveyResponse[]
+}
+
+model SurveyQuestion {
+  id         String             @id @default(cuid())
+  surveyId   String
+  survey     CandidateSurvey    @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  text       String             @db.Text
+  type       SurveyQuestionType @default(TEXT)
+  options    String[] // For SELECT/MULTI_SELECT
+  isRequired Boolean            @default(false)
+  order      Int                @default(0)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  answers SurveyAnswer[]
+
+  @@index([surveyId])
+  @@index([order])
+}
+
+model SurveyResponse {
+  id            String          @id @default(cuid())
+  surveyId      String
+  survey        CandidateSurvey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  candidateId   String
+  applicationId String?
+  token         String          @unique @default(cuid()) // Anonymous access token
+  submittedAt   DateTime?
+  createdAt     DateTime        @default(now())
+
+  answers SurveyAnswer[]
+
+  @@index([surveyId])
+  @@index([candidateId])
+  @@index([token])
+}
+
+model SurveyAnswer {
+  id         String         @id @default(cuid())
+  responseId String
+  response   SurveyResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  questionId String
+  question   SurveyQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  value      String         @db.Text
+  createdAt  DateTime       @default(now())
+
+  @@unique([responseId, questionId])
+  @@index([responseId])
+  @@index([questionId])
+}
+
+// === Interview Kit System ===
+
+// Interview Kit templates (per-job configuration)
+model InterviewKit {
+  id      String  @id @default(cuid())
+  jobId   String
+  job     Job     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  stageId String?
+  stage   Stage?  @relation(fields: [stageId], references: [id], onDelete: SetNull)
+
+  name             String // "Video Interview + Audition"
+  type             InterviewType // PHONE_SCREEN, VIDEO_INTERVIEW, etc.
+  duration         Int           @default(30) // minutes
+  includesAudition Boolean       @default(false)
+  order            Int           @default(0)
+
+  prepItems  InterviewKitPrepItem[]
+  categories InterviewKitCategory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([jobId])
+  @@index([stageId])
+}
+
+// Interview prep talking points
+model InterviewKitPrepItem {
+  id    String       @id @default(cuid())
+  kitId String
+  kit   InterviewKit @relation(fields: [kitId], references: [id], onDelete: Cascade)
+
+  title       String // "Storytelling Audition"
+  description String? @db.Text // Rich text instructions
+  duration    Int? // suggested minutes
+  order       Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([kitId])
+}
+
+// Scorecard categories for interview kit
+model InterviewKitCategory {
+  id    String       @id @default(cuid())
+  kitId String
+  kit   InterviewKit @relation(fields: [kitId], references: [id], onDelete: Cascade)
+
+  name  String // "Storytelling (Audition)"
+  order Int    @default(0)
+
+  attributes InterviewKitAttribute[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([kitId])
+}
+
+// Individual scorecard attributes
+model InterviewKitAttribute {
+  id         String               @id @default(cuid())
+  categoryId String
+  category   InterviewKitCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  name        String // "Enthusiasm & Energy"
+  description String? // What to look for
+  required    Boolean @default(true)
+  order       Int     @default(0)
+
+  ratings InterviewKitRating[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+}
+
+// Recording storage
+model InterviewRecording {
+  id          String    @id @default(cuid())
+  interviewId String    @unique
+  interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+
+  zoomMeetingId   String? // From Zoom webhook
+  zoomRecordingId String? // Zoom's recording ID
+
+  videoUrl String? // S3 URL for video (MP4)
+  audioUrl String? // S3 URL for audio (M4A)
+  duration Int? // seconds
+  fileSize Int? // bytes
+
+  status      RecordingStatus @default(PENDING)
+  recordedAt  DateTime?
+  processedAt DateTime?
+
+  transcript InterviewTranscript?
+
+  // Phase 6: Team Collaboration
+  comments  InterviewComment[]
+  bookmarks InterviewBookmark[]
+  clips     InterviewClip[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Transcript storage
+model InterviewTranscript {
+  id          String             @id @default(cuid())
+  recordingId String             @unique
+  recording   InterviewRecording @relation(fields: [recordingId], references: [id], onDelete: Cascade)
+
+  fullText String @db.Text // Complete transcript
+  segments Json // [{speaker, start, end, text}, ...]
+
+  whisperJobId String? // For tracking async job
+
+  createdAt DateTime @default(now())
+}
+
+// AI analysis and summary
+model InterviewAISummary {
+  id          String    @id @default(cuid())
+  interviewId String    @unique
+  interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+
+  summary           String @db.Text // Overall summary
+  attributeAnalysis Json // [{attributeId, evidence, suggestedRating}, ...]
+
+  recommendation       String // STRONG_YES, YES, NO, STRONG_NO
+  recommendationScore  Int // 0-100
+  recommendationReason String @db.Text
+
+  strengths         Json // ["Clear communicator", ...]
+  concerns          Json // ["Limited experience with ages 3-5"]
+  followUpQuestions Json // ["Ask about younger age groups"]
+
+  createdAt DateTime @default(now())
+}
+
+// Completed scorecard (interviewer input)
+model InterviewKitScorecard {
+  id          String    @id @default(cuid())
+  interviewId String
+  interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  scorerId    String
+  scorer      User      @relation("InterviewKitScorecards", fields: [scorerId], references: [id])
+
+  keyTakeaways String? @db.Text // Rich text
+  privateNotes String? @db.Text // Only visible to scorer
+
+  overallRecommendation OverallRecommendation
+
+  ratings InterviewKitRating[]
+
+  submittedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([interviewId])
+  @@index([scorerId])
+}
+
+// Individual attribute ratings
+model InterviewKitRating {
+  id          String                @id @default(cuid())
+  scorecardId String
+  scorecard   InterviewKitScorecard @relation(fields: [scorecardId], references: [id], onDelete: Cascade)
+  attributeId String
+  attribute   InterviewKitAttribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+
+  rating      Int // 1-5
+  notes       String? // Optional notes for this attribute
+  aiSuggested Int? // What AI suggested (for comparison)
+
+  createdAt DateTime @default(now())
+
+  @@index([scorecardId])
+  @@index([attributeId])
+}
+
+// === Phase 6: Team Collaboration ===
+
+// Timestamped comments on interview recordings
+model InterviewComment {
+  id          String             @id @default(cuid())
+  recordingId String
+  recording   InterviewRecording @relation(fields: [recordingId], references: [id], onDelete: Cascade)
+  authorId    String
+  author      User               @relation("InterviewComments", fields: [authorId], references: [id])
+
+  timestamp  Float // seconds into the recording
+  content    String  @db.Text
+  isResolved Boolean @default(false)
+
+  // Thread support for replies
+  parentId String?
+  parent   InterviewComment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  InterviewComment[] @relation("CommentReplies")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([recordingId])
+  @@index([authorId])
+  @@index([timestamp])
+}
+
+// Bookmarks for key moments in recordings
+model InterviewBookmark {
+  id          String             @id @default(cuid())
+  recordingId String
+  recording   InterviewRecording @relation(fields: [recordingId], references: [id], onDelete: Cascade)
+  authorId    String
+  author      User               @relation("InterviewBookmarks", fields: [authorId], references: [id])
+
+  timestamp Float // seconds into the recording
+  label     String // "Great answer about teamwork"
+  color     String? // Optional color coding (hex)
+
+  createdAt DateTime @default(now())
+
+  @@index([recordingId])
+  @@index([authorId])
+}
+
+// Clips from recordings (internal team use)
+model InterviewClip {
+  id          String             @id @default(cuid())
+  recordingId String
+  recording   InterviewRecording @relation(fields: [recordingId], references: [id], onDelete: Cascade)
+  createdById String
+  createdBy   User               @relation("InterviewClips", fields: [createdById], references: [id])
+
+  title     String // "Strong communication example"
+  startTime Float // seconds
+  endTime   Float // seconds
+
+  shareToken String? @unique // For public sharing
+
+  createdAt DateTime @default(now())
+
+  @@index([recordingId])
+  @@index([createdById])
+}
+
+// === Phase 7: Learning Foundation ===
+
+// Pattern types for AI learning
+enum PatternType {
+  ANSWER_QUALITY // How they answer questions
+  COMMUNICATION_STYLE // How they communicate
+  ENTHUSIASM_SIGNAL // Signs of genuine interest
+  RED_FLAG // Warning signs
+  EXPERIENCE_CLAIM // How they describe experience
+  QUESTION_ASKED // Questions they ask
+}
+
+// Track actual hiring outcomes for AI learning
+model HiringOutcome {
+  id            String      @id @default(cuid())
+  applicationId String      @unique
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  // Core outcome
+  wasHired  Boolean
+  hireDate  DateTime?
+  startDate DateTime?
+
+  // Retention tracking (updated over time)
+  stillEmployedAt30Days  Boolean?
+  stillEmployedAt90Days  Boolean?
+  stillEmployedAt180Days Boolean?
+
+  // Termination details
+  terminatedAt      DateTime?
+  terminationReason String? // VOLUNTARY, PERFORMANCE, NO_SHOW, etc.
+
+  // Performance feedback (optional, from hiring manager)
+  performanceRating Int? // 1-5
+  performanceNotes  String? @db.Text
+
+  // Rejection regret (did we pass on someone great?)
+  rejectionRegret Boolean @default(false)
+  regretNotes     String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([wasHired])
+  @@index([createdAt])
+}
+
+// Track AI recommendation accuracy feedback
+model AIRecommendationFeedback {
+  id          String    @id @default(cuid())
+  interviewId String
+  interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+
+  // What AI recommended
+  aiRecommendation String // STRONG_YES, YES, NO, STRONG_NO
+  aiScore          Int // 0-100
+
+  // What human decided
+  humanRecommendation String? // STRONG_YES, YES, NO, STRONG_NO
+  humanScore          Int? // 0-100 (from scorecard)
+
+  // Explicit feedback
+  wasAIHelpful  Boolean? // Did this save time / help decision?
+  feedbackType  String? // AGREE, DISAGREE_TOO_HIGH, DISAGREE_TOO_LOW, PARTIALLY_AGREE
+  feedbackNotes String?  @db.Text
+
+  // Which specific AI observations were wrong?
+  incorrectStrengths Json? // AI-identified strengths that weren't accurate
+  missedStrengths    Json? // Strengths human noticed that AI missed
+  incorrectConcerns  Json? // AI concerns that weren't valid
+  missedConcerns     Json? // Concerns human noticed that AI missed
+
+  createdAt DateTime @default(now())
+
+  @@index([interviewId])
+  @@index([feedbackType])
+}
+
+// === Phase 8: Pattern Extraction ===
+
+// Learned patterns from successful hires
+model InterviewPattern {
+  id    String  @id @default(cuid())
+  jobId String?
+  job   Job?    @relation(fields: [jobId], references: [id], onDelete: SetNull)
+
+  patternType PatternType
+  pattern     String      @db.Text // The phrase, behavior, or response pattern
+  context     String?     @db.Text // When this pattern matters
+
+  // Scoring impact
+  positiveSignal Boolean // Is this good or bad?
+  weight         Float   @default(1.0)
+  confidence     Float // How confident are we in this pattern? (0-1)
+
+  // Evidence tracking
+  exampleCount Int    @default(0)
+  successRate  Float? // % of candidates with this pattern who were good hires
+
+  // For human review
+  isVerified   Boolean   @default(false)
+  verifiedById String?
+  verifiedBy   User?     @relation("VerifiedPatterns", fields: [verifiedById], references: [id])
+  verifiedAt   DateTime?
+
+  // Source tracking for audit
+  sourceInterviewIds String[] // IDs of interviews this was extracted from
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([jobId])
+  @@index([patternType])
+  @@index([positiveSignal])
+  @@index([isVerified])
+  @@index([confidence])
+}
+
+// Question-answer examples for training and evaluation
+model QuestionAnswerExample {
+  id             String  @id @default(cuid())
+  question       String  @db.Text
+  questionIntent String? // What we're trying to learn from this question
+
+  exampleAnswer String  @db.Text
+  isGoodExample Boolean
+  explanation   String? @db.Text // Why this is a good/bad answer
+
+  // Quality metrics
+  qualityScore Int? // 1-5 rating of answer quality
+
+  // Source tracking
+  sourceTranscriptId String?
+  sourceInterviewId  String?
+
+  // Categorization
+  jobId       String?
+  job         Job?    @relation(fields: [jobId], references: [id], onDelete: SetNull)
+  attributeId String? // Which scorecard attribute this relates to
+
+  // For review
+  isVerified   Boolean   @default(false)
+  verifiedById String?
+  verifiedBy   User?     @relation("VerifiedQAExamples", fields: [verifiedById], references: [id])
+  verifiedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([jobId])
+  @@index([isGoodExample])
+  @@index([isVerified])
+}
+
+// =============================================================================
+// Phase 9: Async Text Screening
+// =============================================================================
+
+enum ScreeningType {
+  TEXT_SMS // SMS-based screening
+  TEXT_CHAT // In-app chat screening
+  TEXT_EMAIL // Email-based screening
+  VOICE_ASYNC // Record answer to question (future)
+}
+
+enum ScreeningStatus {
+  PENDING // Not yet started
+  IN_PROGRESS // Conversation active
+  AWAITING_RESPONSE // Waiting for candidate reply
+  COMPLETED // All questions answered
+  EXPIRED // Candidate didn't respond in time
+  HUMAN_TAKEOVER // Recruiter took over the conversation
+}
+
+enum ScreeningDecision {
+  ADVANCE // Move to next stage
+  SCHEDULE_CALL // Needs human phone screen
+  REJECT // Not a fit
+  HOLD // Needs more info/review
+}
+
+enum ScreeningQuestionType {
+  OPEN_ENDED // Free text response
+  MULTIPLE_CHOICE // Select from options
+  YES_NO // Boolean response
+  AVAILABILITY // Availability/schedule question
+  SALARY_EXPECTATION // Compensation expectations
+}
+
+enum ScreeningMessageRole {
+  AI // Message from AI
+  CANDIDATE // Message from candidate
+  SYSTEM // System notification
+  RECRUITER // Human recruiter jumped in
+}
+
+// AI screening session for a candidate application
+model AIScreeningSession {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  type   ScreeningType
+  status ScreeningStatus @default(PENDING)
+
+  // SMS/Contact info (for TEXT_SMS type)
+  candidatePhone String?
+
+  // Configuration
+  questionSetId String?
+  questionSet   ScreeningQuestionSet? @relation(fields: [questionSetId], references: [id])
+
+  // Timing
+  startedAt      DateTime?
+  completedAt    DateTime?
+  expiresAt      DateTime?
+  lastActivityAt DateTime?
+
+  // Results
+  aiScore           Int? // 0-100 overall score
+  aiRecommendation  ScreeningDecision?
+  aiNotes           String?            @db.Text
+  knockoutTriggered Boolean            @default(false)
+  knockoutReason    String?
+
+  // Human review
+  humanReviewerId String?
+  humanReviewer   User?              @relation("ScreeningReviewer", fields: [humanReviewerId], references: [id])
+  humanDecision   ScreeningDecision?
+  humanNotes      String?            @db.Text
+  reviewedAt      DateTime?
+
+  // Messages in this session
+  messages ScreeningMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([applicationId])
+  @@index([status])
+  @@index([questionSetId])
+  @@index([aiScore])
+  @@index([candidatePhone])
+}
+
+// Reusable set of screening questions (can be job-specific or org-wide)
+model ScreeningQuestionSet {
+  id          String  @id @default(cuid())
+  name        String
+  description String? @db.Text
+
+  // Optional job association (null = org-wide template)
+  jobId String?
+  job   Job?    @relation(fields: [jobId], references: [id], onDelete: SetNull)
+
+  // Whether this is the default set for the job
+  isDefault Boolean @default(false)
+
+  questions ScreeningQuestion[]
+  sessions  AIScreeningSession[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([jobId])
+  @@index([isDefault])
+}
+
+// Individual screening question
+model ScreeningQuestion {
+  id            String               @id @default(cuid())
+  questionSetId String
+  questionSet   ScreeningQuestionSet @relation(fields: [questionSetId], references: [id], onDelete: Cascade)
+
+  order        Int
+  question     String                @db.Text
+  questionType ScreeningQuestionType
+
+  // For multiple choice questions
+  options Json? // Array of option strings
+
+  // Knockout configuration
+  isKnockout      Boolean @default(false)
+  knockoutAnswer  String? // Answer that triggers knockout
+  knockoutMessage String? @db.Text // Message to send if knocked out
+
+  // AI evaluation guidance
+  evaluationPrompt   String? @db.Text // How AI should evaluate the answer
+  minAcceptableScore Int? // 1-5, below this triggers concern
+
+  // Follow-up logic
+  conditionalFollowUp Boolean @default(false)
+  followUpCondition   Json? // Condition for showing follow-up
+  followUpQuestionId  String? // ID of follow-up question to ask
+
+  createdAt DateTime @default(now())
+
+  @@index([questionSetId])
+  @@index([order])
+}
+
+// Individual message in a screening conversation
+model ScreeningMessage {
+  id        String             @id @default(cuid())
+  sessionId String
+  session   AIScreeningSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  role    ScreeningMessageRole
+  content String               @db.Text
+
+  // For tracking which question this answers
+  questionId    String?
+  questionOrder Int?
+
+  // AI analysis of candidate response
+  aiAnalysis String? @db.Text
+  aiScore    Int? // 1-5 score for this answer
+
+  // For voice messages (future)
+  audioUrl   String?
+  transcript String? @db.Text
+
+  // Delivery tracking (for SMS/email)
+  deliveredAt   DateTime?
+  readAt        DateTime?
+  deliveryError String?
+
+  sentAt DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([role])
+  @@index([sentAt])
+}

@@ -1,0 +1,453 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/app/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}"
+  ],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        // Brand Colors from Acme Talent Logo
+        // Primary - Rich Purple
+        purple: {
+          DEFAULT: '#6B46C1',
+          50: '#F5F3FF',
+          100: '#EDE9FE',
+          200: '#DDD6FE',
+          300: '#C4B5FD',
+          400: '#A78BFA',
+          500: '#8B5CF6',
+          600: '#7C3AED',
+          700: '#6B46C1',
+          800: '#5B21B6',
+          900: '#4C1D95',
+          950: '#2E1065',
+        },
+        // Accent - Vibrant Cyan/Turquoise
+        cyan: {
+          DEFAULT: '#06B6D4',
+          50: '#ECFEFF',
+          100: '#CFFAFE',
+          200: '#A5F3FC',
+          300: '#67E8F9',
+          400: '#22D3EE',
+          500: '#06B6D4',
+          600: '#0891B2',
+          700: '#0E7490',
+          800: '#155E75',
+          900: '#164E63',
+          950: '#083344',
+        },
+        // Highlight - Golden Yellow
+        yellow: {
+          DEFAULT: '#FDB913',
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#FDB913',
+          600: '#F59E0B',
+          700: '#D97706',
+          800: '#B45309',
+          900: '#92400E',
+          950: '#78350F',
+        },
+        // Foundation - Deep navy for sophistication
+        navy: {
+          DEFAULT: '#0F1729',
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F1729',
+          950: '#020617',
+        },
+        // Neutrals - Warm stone grays
+        stone: {
+          50: '#FAFAF9',
+          100: '#F5F5F4',
+          200: '#E7E5E4',
+          300: '#D6D3D1',
+          400: '#A8A29E',
+          500: '#78716C',
+          600: '#57534E',
+          700: '#44403C',
+          800: '#292524',
+          900: '#1C1917',
+          950: '#0C0A09',
+        },
+        // Status Colors (using brand palette)
+        success: {
+          DEFAULT: '#10B981',
+          50: '#ECFDF5',
+          100: '#D1FAE5',
+          200: '#A7F3D0',
+          300: '#6EE7B7',
+          400: '#34D399',
+          500: '#10B981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065F46',
+          900: '#064E3B',
+        },
+        warning: {
+          DEFAULT: '#FDB913',
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#FDB913',
+          600: '#F59E0B',
+          700: '#D97706',
+          800: '#B45309',
+          900: '#92400E',
+        },
+        danger: {
+          DEFAULT: '#EF4444',
+          50: '#FEF2F2',
+          100: '#FEE2E2',
+          200: '#FECACA',
+          300: '#FCA5A5',
+          400: '#F87171',
+          500: '#EF4444',
+          600: '#DC2626',
+          700: '#B91C1C',
+          800: '#991B1B',
+          900: '#7F1D1D',
+        },
+        // STC brand colors (standard across all STC apps)
+        'brand-navy': '#2D2F8E',
+        'brand-purple': '#6A469D',
+        'brand-cyan': '#50C8DF',
+        'brand-light': '#E8FBFF',
+        'brand-green': '#34B256',
+        'brand-yellow': '#FACC29',
+        'brand-orange': '#F79A30',
+        'brand-pink': '#EF4444',
+        // Backwards compat - map to brand colors
+        accent: {
+          DEFAULT: '#6B46C1',
+          50: '#F5F3FF',
+          100: '#EDE9FE',
+          200: '#DDD6FE',
+          300: '#C4B5FD',
+          400: '#A78BFA',
+          500: '#8B5CF6',
+          600: '#7C3AED',
+          700: '#6B46C1',
+          800: '#5B21B6',
+          900: '#4C1D95',
+        },
+        // Slate (backwards compat - map to navy)
+        slate: {
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          850: '#1A2030',
+          900: '#0F1729',
+          925: '#0B1220',
+          950: '#020617',
+        },
+      },
+      fontFamily: {
+        // Display - Poppins (STC brand standard)
+        display: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        // Sans - Poppins for body
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        // Alternate sans - For UI elements
+        ui: ['var(--font-sans)', 'sans-serif'],
+        // Mono - Code and data
+        mono: ['var(--font-mono)', 'Consolas', 'monospace'],
+      },
+      fontSize: {
+        // Editorial typography scale
+        'xs': ['0.75rem', { lineHeight: '1.5', letterSpacing: '0.02em' }],
+        'sm': ['0.875rem', { lineHeight: '1.6', letterSpacing: '0.01em' }],
+        'base': ['1rem', { lineHeight: '1.7', letterSpacing: '0' }],
+        'lg': ['1.125rem', { lineHeight: '1.6', letterSpacing: '-0.01em' }],
+        'xl': ['1.25rem', { lineHeight: '1.5', letterSpacing: '-0.015em' }],
+        '2xl': ['1.5rem', { lineHeight: '1.4', letterSpacing: '-0.02em' }],
+        '3xl': ['1.875rem', { lineHeight: '1.3', letterSpacing: '-0.025em' }],
+        '4xl': ['2.25rem', { lineHeight: '1.2', letterSpacing: '-0.03em' }],
+        '5xl': ['3rem', { lineHeight: '1.15', letterSpacing: '-0.035em' }],
+        '6xl': ['3.75rem', { lineHeight: '1.1', letterSpacing: '-0.04em' }],
+        '7xl': ['4.5rem', { lineHeight: '1', letterSpacing: '-0.045em' }],
+        '8xl': ['6rem', { lineHeight: '1', letterSpacing: '-0.05em' }],
+      },
+      fontWeight: {
+        light: '300',
+        regular: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
+        extrabold: '800',
+        black: '900',
+      },
+      borderRadius: {
+        'none': '0',
+        'sm': '0.25rem',
+        'DEFAULT': '0.375rem',
+        'md': '0.5rem',
+        'lg': '0.625rem',
+        'xl': '0.75rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+        'full': '9999px',
+      },
+      boxShadow: {
+        // Refined, elevated shadows
+        'xs': '0 1px 2px 0 rgb(15 23 41 / 0.04)',
+        'sm': '0 2px 4px -1px rgb(15 23 41 / 0.06), 0 1px 2px -1px rgb(15 23 41 / 0.03)',
+        'DEFAULT': '0 4px 8px -2px rgb(15 23 41 / 0.08), 0 2px 4px -2px rgb(15 23 41 / 0.04)',
+        'md': '0 6px 12px -2px rgb(15 23 41 / 0.1), 0 3px 6px -3px rgb(15 23 41 / 0.05)',
+        'lg': '0 12px 24px -4px rgb(15 23 41 / 0.12), 0 6px 12px -6px rgb(15 23 41 / 0.06)',
+        'xl': '0 20px 40px -8px rgb(15 23 41 / 0.16), 0 8px 16px -8px rgb(15 23 41 / 0.08)',
+        '2xl': '0 32px 64px -12px rgb(15 23 41 / 0.2), 0 12px 24px -12px rgb(15 23 41 / 0.1)',
+        // Brand color glows
+        'glow-xs': '0 0 10px -3px rgb(107 70 193 / 0.3)',
+        'glow-sm': '0 0 15px -3px rgb(107 70 193 / 0.35)',
+        'glow': '0 0 24px -6px rgb(107 70 193 / 0.4)',
+        'glow-lg': '0 0 32px -8px rgb(107 70 193 / 0.45)',
+        'glow-purple': '0 0 24px -6px rgb(107 70 193 / 0.5)',
+        'glow-cyan': '0 0 24px -6px rgb(6 182 212 / 0.5)',
+        'glow-yellow': '0 0 24px -6px rgb(253 185 19 / 0.5)',
+        'glow-success': '0 0 20px -5px rgb(16 185 129 / 0.4)',
+        'glow-warning': '0 0 20px -5px rgb(253 185 19 / 0.4)',
+        'glow-danger': '0 0 20px -5px rgb(239 68 68 / 0.4)',
+        // Inner shadows
+        'inner-sm': 'inset 0 1px 2px 0 rgb(15 23 41 / 0.08)',
+        'inner': 'inset 0 2px 4px 0 rgb(15 23 41 / 0.1)',
+        'inner-lg': 'inset 0 4px 8px 0 rgb(15 23 41 / 0.12)',
+        // Refined border shadows
+        'border': '0 0 0 1px rgb(15 23 41 / 0.08), 0 1px 2px 0 rgb(15 23 41 / 0.04)',
+        'border-purple': '0 0 0 1px rgb(107 70 193 / 0.2), 0 2px 4px 0 rgb(107 70 193 / 0.1)',
+        'border-cyan': '0 0 0 1px rgb(6 182 212 / 0.2), 0 2px 4px 0 rgb(6 182 212 / 0.1)',
+        'border-yellow': '0 0 0 1px rgb(253 185 19 / 0.2), 0 2px 4px 0 rgb(253 185 19 / 0.1)',
+        // Glass effect
+        'glass': '0 8px 32px 0 rgba(15, 23, 41, 0.37)',
+      },
+      backgroundImage: {
+        // Gradients using brand colors
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        // Purple gradients
+        'gradient-purple': 'linear-gradient(135deg, #7C3AED 0%, #6B46C1 100%)',
+        'gradient-purple-warm': 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6B46C1 100%)',
+        // Cyan gradients
+        'gradient-cyan': 'linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)',
+        'gradient-cyan-bright': 'linear-gradient(135deg, #22D3EE 0%, #06B6D4 50%, #0891B2 100%)',
+        // Yellow/gold gradients
+        'gradient-yellow': 'linear-gradient(135deg, #FDB913 0%, #F59E0B 100%)',
+        'gradient-yellow-warm': 'linear-gradient(135deg, #FBBF24 0%, #FDB913 50%, #F59E0B 100%)',
+        // Brand gradient (multi-color)
+        'gradient-brand': 'linear-gradient(135deg, #6B46C1 0%, #06B6D4 50%, #FDB913 100%)',
+        'gradient-brand-horizontal': 'linear-gradient(90deg, #6B46C1 0%, #06B6D4 50%, #FDB913 100%)',
+        // Status gradients
+        'gradient-success': 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+        'gradient-warning': 'linear-gradient(135deg, #FDB913 0%, #F59E0B 100%)',
+        'gradient-danger': 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
+        // Navy overlays
+        'gradient-navy': 'linear-gradient(135deg, rgba(15, 23, 41, 0.95) 0%, rgba(15, 23, 41, 0.85) 100%)',
+        'gradient-navy-soft': 'linear-gradient(180deg, rgba(15, 23, 41, 0) 0%, rgba(15, 23, 41, 0.4) 100%)',
+        // Subtle textures
+        'noise': "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E\")",
+        'grain': "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.02'/%3E%3C/svg%3E\")",
+        // Brand mesh
+        'mesh-brand': 'radial-gradient(at 0% 0%, rgba(107, 70, 193, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.12) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(253, 185, 19, 0.1) 0px, transparent 50%), radial-gradient(at 0% 100%, rgba(107, 70, 193, 0.08) 0px, transparent 50%)',
+        'mesh-purple': 'radial-gradient(at 40% 20%, rgba(107, 70, 193, 0.18) 0px, transparent 50%), radial-gradient(at 80% 80%, rgba(139, 92, 246, 0.12) 0px, transparent 50%)',
+        // Glass overlays
+        'glass-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%)',
+        'glass-gradient-dark': 'linear-gradient(135deg, rgba(15, 23, 41, 0.4) 0%, rgba(15, 23, 41, 0.6) 100%)',
+        // Backwards compat
+        'gradient-accent': 'linear-gradient(135deg, #6B46C1 0%, #5B21B6 100%)',
+        'gradient-accent-horizontal': 'linear-gradient(90deg, #6B46C1 0%, #5B21B6 100%)',
+      },
+      backdropBlur: {
+        xs: '2px',
+        sm: '4px',
+        DEFAULT: '8px',
+        md: '12px',
+        lg: '16px',
+        xl: '24px',
+        '2xl': '40px',
+        '3xl': '64px',
+      },
+      animation: {
+        // Refined entrance animations
+        'fade-in': 'fade-in 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'fade-in-up': 'fade-in-up 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'fade-in-down': 'fade-in-down 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'fade-in-left': 'fade-in-left 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'fade-in-right': 'fade-in-right 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'scale-in': 'scale-in 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'slide-in-right': 'slide-in-right 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'slide-in-left': 'slide-in-left 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'slide-in-up': 'slide-in-up 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'slide-in-down': 'slide-in-down 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        // Staggered reveals (for page load orchestration)
+        'reveal-1': 'fade-in-up 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.1s forwards',
+        'reveal-2': 'fade-in-up 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.2s forwards',
+        'reveal-3': 'fade-in-up 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.3s forwards',
+        'reveal-4': 'fade-in-up 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.4s forwards',
+        'reveal-5': 'fade-in-up 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.5s forwards',
+        // Looping animations (subtle, refined)
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
+        'shimmer': 'shimmer 3s infinite ease-in-out',
+        'float': 'float 8s ease-in-out infinite',
+        'float-shapes': 'float-shapes 6s ease-in-out infinite',
+        'marquee': 'marquee 30s linear infinite',
+        'spin-slow': 'spin 12s linear infinite',
+        // Interaction animations
+        'bounce-sm': 'bounce-sm 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+        'wiggle': 'wiggle 0.3s ease-in-out',
+        'ping-once': 'ping 0.75s cubic-bezier(0, 0, 0.2, 1) forwards',
+        // Editorial-specific
+        'underline-reveal': 'underline-reveal 0.3s ease-out forwards',
+        'border-glow': 'border-glow 2s ease-in-out infinite',
+      },
+      keyframes: {
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'fade-in-up': {
+          '0%': { opacity: '0', transform: 'translateY(24px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'fade-in-down': {
+          '0%': { opacity: '0', transform: 'translateY(-24px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'fade-in-left': {
+          '0%': { opacity: '0', transform: 'translateX(-24px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        'fade-in-right': {
+          '0%': { opacity: '0', transform: 'translateX(24px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        'scale-in': {
+          '0%': { opacity: '0', transform: 'scale(0.96)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'slide-in-right': {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'slide-in-left': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'slide-in-up': {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        'slide-in-down': {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.7' },
+        },
+        'shimmer': {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        'float': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-12px)' },
+        },
+        'float-shapes': {
+          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+          '50%': { transform: 'translateY(-20px) rotate(5deg)' },
+        },
+        'marquee': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'bounce-sm': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
+        'wiggle': {
+          '0%, 100%': { transform: 'rotate(-1deg)' },
+          '50%': { transform: 'rotate(1deg)' },
+        },
+        'underline-reveal': {
+          '0%': { width: '0' },
+          '100%': { width: '100%' },
+        },
+        'border-glow': {
+          '0%, 100%': { borderColor: 'rgb(15 23 41 / 0.1)' },
+          '50%': { borderColor: 'rgb(107 70 193 / 0.3)' },
+        },
+      },
+      transitionDuration: {
+        '0': '0ms',
+        '75': '75ms',
+        '100': '100ms',
+        '150': '150ms',
+        '200': '200ms',
+        '250': '250ms',
+        '300': '300ms',
+        '400': '400ms',
+        '500': '500ms',
+        '600': '600ms',
+        '700': '700ms',
+        '800': '800ms',
+        '1000': '1000ms',
+      },
+      transitionTimingFunction: {
+        'bounce-in': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)', // Editorial easing
+        'in-expo': 'cubic-bezier(0.95, 0.05, 0.795, 0.035)',
+        'editorial': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '112': '28rem',
+        '128': '32rem',
+        '144': '36rem',
+        '160': '40rem',
+        '192': '48rem',
+      },
+      zIndex: {
+        '60': '60',
+        '70': '70',
+        '80': '80',
+        '90': '90',
+        '100': '100',
+      },
+      letterSpacing: {
+        'tightest': '-0.05em',
+        'tighter': '-0.03em',
+        'tight': '-0.02em',
+        'normal': '0',
+        'wide': '0.01em',
+        'wider': '0.02em',
+        'widest': '0.05em',
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
+};
