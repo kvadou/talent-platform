@@ -75,7 +75,7 @@ async function sendRetentionEmail(
               </td>
             </tr>
           </table>
-          <p style="font-size: 14px; color: #718096;">This is an automated reminder from the STC ATS retention tracking system.</p>
+          <p style="font-size: 14px; color: #718096;">This is an automated reminder from the Acme Talent retention tracking system.</p>
         `,
         from: 'RECRUITING',
         preheader: `${checkpoint} check-in for ${candidateName}`,

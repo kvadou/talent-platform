@@ -20,8 +20,8 @@ import {
 } from '@heroicons/react/24/outline';
 import { CheckCircleIcon as CheckCircleSolidIcon } from '@heroicons/react/24/solid';
 
-// STC Brand Assets
-const STC_LOGO = 'https://cdn.prod.website-files.com/68484ceb4053183a87397af5/6849c92715d2914bcb05d69b_STC%20Logo%20COLOR%20CURRENT%202024.png';
+// Brand Assets
+const BRAND_LOGO = 'https://placehold.co/200x60/3BA9DA/white?text=Acme+Talent';
 
 type TimeSlot = {
   start: string;
@@ -292,7 +292,7 @@ export default function SchedulePage() {
         <FloatingShape className="w-40 h-40 bg-[#E8837B] bottom-32 left-1/4" delay={2} />
 
         <div className="text-center relative z-10">
-          <Image src={STC_LOGO} alt="Acme Talent" width={320} height={90} unoptimized className="h-20 w-auto mx-auto mb-8" />
+          <Image src={BRAND_LOGO} alt="Acme Talent" width={320} height={90} unoptimized className="h-20 w-auto mx-auto mb-8" />
           <div className="w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-6" />
           <p className="text-white/90 text-lg font-medium">Loading available times...</p>
         </div>
@@ -308,7 +308,7 @@ export default function SchedulePage() {
         <FloatingShape className="w-24 h-24 bg-[#F5D547] bottom-40 right-20" delay={1} />
 
         <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-md w-full text-center relative z-10">
-          <Image src={STC_LOGO} alt="Acme Talent" width={250} height={70} unoptimized className="h-14 w-auto mx-auto mb-8" />
+          <Image src={BRAND_LOGO} alt="Acme Talent" width={250} height={70} unoptimized className="h-14 w-auto mx-auto mb-8" />
           <div className="w-20 h-20 bg-[#E8837B]/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <ExclamationTriangleIcon className="w-10 h-10 text-[#E8837B]" />
           </div>
@@ -336,7 +336,7 @@ export default function SchedulePage() {
         <FloatingShape className="w-16 h-16 bg-white bottom-40 right-1/3" delay={0.5} />
 
         <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-lg w-full text-center relative z-10">
-          <Image src={STC_LOGO} alt="Acme Talent" width={250} height={70} unoptimized className="h-14 w-auto mx-auto mb-8" />
+          <Image src={BRAND_LOGO} alt="Acme Talent" width={250} height={70} unoptimized className="h-14 w-auto mx-auto mb-8" />
 
           {/* Success Icon with Animation */}
           <div className="relative w-24 h-24 mx-auto mb-8">
@@ -425,7 +425,7 @@ export default function SchedulePage() {
           <div className="mb-8">
             <Link href="https://acmetalent.com">
               <Image
-                src={STC_LOGO}
+                src={BRAND_LOGO}
                 alt="Acme Talent"
                 width={250}
                 height={70}
@@ -670,7 +670,7 @@ export default function SchedulePage() {
       {/* Footer */}
       <footer className="bg-[#1E2A4A] text-white py-12 px-6 mt-8">
         <div className="max-w-4xl mx-auto text-center">
-          <Image src={STC_LOGO} alt="Acme Talent" width={220} height={60} unoptimized className="h-12 w-auto mx-auto mb-6" />
+          <Image src={BRAND_LOGO} alt="Acme Talent" width={220} height={60} unoptimized className="h-12 w-auto mx-auto mb-6" />
           <p className="text-white/80 mb-2">
             Questions about scheduling?
           </p>

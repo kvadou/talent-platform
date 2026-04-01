@@ -1400,7 +1400,7 @@ model Offer {
 
   // External integrations
   dropboxSignRequestId String? // Dropbox Sign contract request (legacy)
-  esignDocumentId      String? // STC E-Sign document ID
+  esignDocumentId      String? // E-Sign document ID
   checkrInvitationId   String? // Checkr background check
 
   // Response

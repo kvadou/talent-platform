@@ -52,8 +52,8 @@ export const authOptions: NextAuthOptions = {
               role: 'RECRUITER',
               organization: {
                 connectOrCreate: {
-                  where: { id: 'stc-org' },
-                  create: { id: 'stc-org', name: 'Acme Talent' },
+                  where: { id: 'acme-org' },
+                  create: { id: 'acme-org', name: 'Acme Talent' },
                 },
               },
             },
@@ -177,8 +177,8 @@ export async function ensureUser() {
         role: 'RECRUITER',
         organization: {
           connectOrCreate: {
-            where: { id: 'stc-org' },
-            create: { id: 'stc-org', name: 'Acme Talent' },
+            where: { id: 'acme-org' },
+            create: { id: 'acme-org', name: 'Acme Talent' },
           },
         },
       },

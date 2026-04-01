@@ -31,7 +31,7 @@ type Job = {
 
 // Asset URLs
 const ASSETS = {
-  logo: 'https://cdn.prod.website-files.com/68484ceb4053183a87397af5/6849c92715d2914bcb05d69b_STC%20Logo%20COLOR%20CURRENT%202024.png',
+  logo: 'https://placehold.co/200x60/3BA9DA/white?text=Acme+Talent',
   video: 'https://www.youtube.com/embed/JZvz42dKFl4',
   gallery: [
     'https://cdn.prod.website-files.com/68484ceb4053183a87397af5/68484ceb4053183a873980e3_Commited2.jpg',

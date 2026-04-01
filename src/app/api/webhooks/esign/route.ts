@@ -5,7 +5,7 @@ import crypto from 'crypto';
 const ESIGN_WEBHOOK_SECRET = process.env.ESIGN_WEBHOOK_SECRET;
 
 /**
- * STC E-Sign Webhook Handler
+ * E-Sign Webhook Handler
  *
  * Event types we handle:
  * - document.completed: When all signers have signed

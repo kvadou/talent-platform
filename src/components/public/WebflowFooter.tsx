@@ -1,30 +1,30 @@
 import Image from 'next/image';
 
-const STC_BASE = 'https://acmetalent.com';
-const LOGO_URL = 'https://cdn.prod.website-files.com/68484ceb4053183a87397af5/6849c92715d2914bcb05d69b_STC%20Logo%20COLOR%20CURRENT%202024.png';
+const SITE_BASE = 'https://acmetalent.com';
+const LOGO_URL = 'https://placehold.co/229x165/3BA9DA/white?text=Acme+Talent';
 
 const COLUMNS = [
   {
     title: 'Company',
     links: [
-      { label: 'About Us', href: `${STC_BASE}/about-us` },
-      { label: 'Careers', href: `${STC_BASE}/careers` },
-      { label: 'Contact Us', href: `${STC_BASE}/contact-us` },
+      { label: 'About Us', href: `${SITE_BASE}/about-us` },
+      { label: 'Careers', href: `${SITE_BASE}/careers` },
+      { label: 'Contact Us', href: `${SITE_BASE}/contact-us` },
     ],
   },
   {
     title: 'Resources',
     links: [
-      { label: 'FAQs', href: `${STC_BASE}/faq` },
-      { label: 'Blog', href: `${STC_BASE}/blog` },
+      { label: 'FAQs', href: `${SITE_BASE}/faq` },
+      { label: 'Blog', href: `${SITE_BASE}/blog` },
       { label: 'Franchise', href: 'https://franchising.acmetalent.com/' },
     ],
   },
   {
     title: 'About',
     links: [
-      { label: 'Terms & Conditions', href: `${STC_BASE}/#` },
-      { label: 'Privacy Policy', href: `${STC_BASE}/privacy-policy` },
+      { label: 'Terms & Conditions', href: `${SITE_BASE}/#` },
+      { label: 'Privacy Policy', href: `${SITE_BASE}/privacy-policy` },
     ],
   },
 ];
@@ -82,7 +82,7 @@ export default function WebflowFooter() {
         <div className="flex flex-col md:flex-row gap-12 md:gap-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href={STC_BASE}>
+            <a href={SITE_BASE}>
               <Image
                 src={LOGO_URL}
                 alt="Acme Talent official color logo 2024"

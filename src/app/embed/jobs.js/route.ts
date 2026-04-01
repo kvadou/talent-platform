@@ -11,7 +11,7 @@ export async function GET() {
   // Configuration - can be overridden by data attributes on the script tag
   const CONFIG = {
     apiUrl: '${apiBaseUrl}/api/public/jobs/feed',
-    containerId: 'stc-jobs',
+    containerId: 'acme-jobs',
     market: null, // Filter by market slug if specified
     showDescription: true,
     maxDescriptionLength: 300,
@@ -32,54 +32,54 @@ export async function GET() {
 
   // Inject styles
   function injectStyles() {
-    if (document.getElementById('stc-jobs-styles')) return;
+    if (document.getElementById('acme-jobs-styles')) return;
 
     const styles = document.createElement('style');
-    styles.id = 'stc-jobs-styles';
+    styles.id = 'acme-jobs-styles';
     styles.textContent = \`
-      .stc-jobs-container {
+      .acme-jobs-container {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       }
-      .stc-jobs-loading {
+      .acme-jobs-loading {
         text-align: center;
         padding: 40px;
         color: #666;
       }
-      .stc-jobs-error {
+      .acme-jobs-error {
         text-align: center;
         padding: 40px;
         color: #dc2626;
         background: #fef2f2;
         border-radius: 8px;
       }
-      .stc-jobs-empty {
+      .acme-jobs-empty {
         text-align: center;
         padding: 40px;
         color: #666;
       }
-      .stc-jobs-list {
+      .acme-jobs-list {
         display: flex;
         flex-direction: column;
         gap: 16px;
       }
-      .stc-job-card {
+      .acme-job-card {
         background: #f0f7ff;
         border-radius: 12px;
         padding: 24px;
         transition: transform 0.2s, box-shadow 0.2s;
       }
-      .stc-job-card:hover {
+      .acme-job-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       }
-      .stc-job-title {
+      .acme-job-title {
         font-size: 1.5rem;
         font-weight: 600;
         color: #1e3a5f;
         margin: 0 0 8px 0;
         line-height: 1.3;
       }
-      .stc-job-location {
+      .acme-job-location {
         display: flex;
         align-items: center;
         gap: 6px;
@@ -87,18 +87,18 @@ export async function GET() {
         font-size: 0.95rem;
         margin-bottom: 16px;
       }
-      .stc-job-location svg {
+      .acme-job-location svg {
         width: 16px;
         height: 16px;
         flex-shrink: 0;
       }
-      .stc-job-description {
+      .acme-job-description {
         color: #374151;
         font-size: 0.95rem;
         line-height: 1.6;
         margin-bottom: 20px;
       }
-      .stc-job-apply-btn {
+      .acme-job-apply-btn {
         display: inline-block;
         background: #f59e0b;
         color: #1e3a5f;
@@ -109,11 +109,11 @@ export async function GET() {
         font-size: 1rem;
         transition: background 0.2s, transform 0.2s;
       }
-      .stc-job-apply-btn:hover {
+      .acme-job-apply-btn:hover {
         background: #d97706;
         transform: scale(1.02);
       }
-      .stc-job-meta {
+      .acme-job-meta {
         display: flex;
         gap: 16px;
         margin-top: 16px;
@@ -153,15 +153,15 @@ export async function GET() {
       : '';
 
     return \`
-      <div class="stc-job-card">
-        <h3 class="stc-job-title">\${job.title}</h3>
-        <div class="stc-job-location">
+      <div class="acme-job-card">
+        <h3 class="acme-job-title">\${job.title}</h3>
+        <div class="acme-job-location">
           \${locationIcon}
           <span>\${job.location}</span>
         </div>
-        \${description ? \`<p class="stc-job-description">\${description}</p>\` : ''}
-        <a href="\${job.applyUrl}" class="stc-job-apply-btn" target="_blank" rel="noopener">Apply</a>
-        <div class="stc-job-meta">
+        \${description ? \`<p class="acme-job-description">\${description}</p>\` : ''}
+        <a href="\${job.applyUrl}" class="acme-job-apply-btn" target="_blank" rel="noopener">Apply</a>
+        <div class="acme-job-meta">
           <span>Posted \${formatDate(job.postedAt)}</span>
           \${job.market ? \`<span>\${job.market}</span>\` : ''}
         </div>
@@ -175,13 +175,13 @@ export async function GET() {
     const container = document.getElementById(config.containerId);
 
     if (!container) {
-      console.error(\`[STC Jobs] Container #\${config.containerId} not found\`);
+      console.error(\`[Acme Jobs] Container #\${config.containerId} not found\`);
       return;
     }
 
     injectStyles();
-    container.classList.add('stc-jobs-container');
-    container.innerHTML = '<div class="stc-jobs-loading">Loading open positions...</div>';
+    container.classList.add('acme-jobs-container');
+    container.innerHTML = '<div class="acme-jobs-loading">Loading open positions...</div>';
 
     try {
       const url = config.market
@@ -198,19 +198,19 @@ export async function GET() {
       const jobs = data.jobs || [];
 
       if (jobs.length === 0) {
-        container.innerHTML = '<div class="stc-jobs-empty">No open positions at this time. Check back soon!</div>';
+        container.innerHTML = '<div class="acme-jobs-empty">No open positions at this time. Check back soon!</div>';
         return;
       }
 
       container.innerHTML = \`
-        <div class="stc-jobs-list">
+        <div class="acme-jobs-list">
           \${jobs.map(job => renderJobCard(job, config)).join('')}
         </div>
       \`;
 
     } catch (error) {
-      console.error('[STC Jobs] Error fetching jobs:', error);
-      container.innerHTML = '<div class="stc-jobs-error">Unable to load open positions. Please try again later.</div>';
+      console.error('[Acme Jobs] Error fetching jobs:', error);
+      container.innerHTML = '<div class="acme-jobs-error">Unable to load open positions. Please try again later.</div>';
     }
   }
 
@@ -222,7 +222,7 @@ export async function GET() {
   }
 
   // Expose refresh function globally
-  window.STCJobs = {
+  window.AcmeJobs = {
     refresh: renderJobs
   };
 })();

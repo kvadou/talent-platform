@@ -4,8 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-const STC_BASE = 'https://acmetalent.com';
-const LOGO_URL = 'https://cdn.prod.website-files.com/68484ceb4053183a87397af5/6849c92715d2914bcb05d69b_STC%20Logo%20COLOR%20CURRENT%202024.png';
+const SITE_BASE = 'https://acmetalent.com';
+const LOGO_URL = 'https://placehold.co/250x180/3BA9DA/white?text=Acme+Talent';
 const AMAZON_URL = 'https://acmetalent.com/shop';
 
 type DropdownItem = { label: string; href: string };
@@ -18,7 +18,7 @@ const MINI_NAV: (NavItem | { type: 'divider' })[] = [
     label: 'In-School Programs',
     items: [
       { label: 'License Our Curriculum (Your Teachers Teach)', href: 'https://acmetalent.com/licensing' },
-      { label: 'We Come To You! (Our Educators Teach)', href: `${STC_BASE}/school-partnerships` },
+      { label: 'We Come To You! (Our Educators Teach)', href: `${SITE_BASE}/school-partnerships` },
     ],
   },
   { type: 'divider' },
@@ -26,29 +26,29 @@ const MINI_NAV: (NavItem | { type: 'divider' })[] = [
 ];
 
 const MAIN_NAV: NavItem[] = [
-  { label: 'Home\nLessons', href: `${STC_BASE}/home-chess-lessons` },
-  { label: 'Online\nLessons', href: `${STC_BASE}/online-chess-lessons` },
+  { label: 'Home\nLessons', href: `${SITE_BASE}/home-chess-lessons` },
+  { label: 'Online\nLessons', href: `${SITE_BASE}/online-chess-lessons` },
   {
     label: 'Locations',
     items: [
-      { label: 'Park Slope', href: `${STC_BASE}/clubs-chess-lessons/park-slope-chess-club` },
-      { label: 'Eastside', href: `${STC_BASE}/locations/fl/eastside` },
-      { label: 'Westside', href: `${STC_BASE}/locations/tn/westside` },
+      { label: 'Park Slope', href: `${SITE_BASE}/clubs-chess-lessons/park-slope-chess-club` },
+      { label: 'Eastside', href: `${SITE_BASE}/locations/fl/eastside` },
+      { label: 'Westside', href: `${SITE_BASE}/locations/tn/westside` },
     ],
   },
   {
     label: 'Camps',
     items: [
-      { label: 'Holiday Camps', href: `${STC_BASE}/clubs-chess-lessons/nyc/holiday-camps` },
-      { label: 'Summer Camp', href: `${STC_BASE}/clubs-chess-lessons/nyc/summer-camp` },
+      { label: 'Holiday Camps', href: `${SITE_BASE}/clubs-chess-lessons/nyc/holiday-camps` },
+      { label: 'Summer Camp', href: `${SITE_BASE}/clubs-chess-lessons/nyc/summer-camp` },
     ],
   },
   {
     label: 'About',
     items: [
-      { label: 'About Us', href: `${STC_BASE}/about-us` },
-      { label: 'Contact Us', href: `${STC_BASE}/contact-us` },
-      { label: 'FAQs', href: `${STC_BASE}/faq` },
+      { label: 'About Us', href: `${SITE_BASE}/about-us` },
+      { label: 'Contact Us', href: `${SITE_BASE}/contact-us` },
+      { label: 'FAQs', href: `${SITE_BASE}/faq` },
     ],
   },
 ];
@@ -117,7 +117,7 @@ export default function WebflowNavbar() {
         <div style={{ padding: '39px 0 0 0' }}>
           <div className="flex items-start justify-between">
             {/* Logo */}
-            <a href={STC_BASE} className="flex-shrink-0 block" style={{ width: '290px', height: '180px' }}>
+            <a href={SITE_BASE} className="flex-shrink-0 block" style={{ width: '290px', height: '180px' }}>
               <Image
                 src={LOGO_URL}
                 alt="Acme Talent official color logo 2024"
@@ -186,7 +186,7 @@ export default function WebflowNavbar() {
       {/* Mobile Nav */}
       <div className="lg:hidden">
         <div className="flex items-center justify-between px-4 py-3">
-          <a href={STC_BASE}>
+          <a href={SITE_BASE}>
             <Image
               src={LOGO_URL}
               alt="Acme Talent official color logo 2024"

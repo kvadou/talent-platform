@@ -28,8 +28,8 @@ const CandidatePuzzleWidget = dynamic(
   { ssr: false }
 );
 
-// STC Brand Assets
-const STC_LOGO = 'https://cdn.prod.website-files.com/68484ceb4053183a87397af5/6849c92715d2914bcb05d69b_STC%20Logo%20COLOR%20CURRENT%202024.png';
+// Brand Assets
+const BRAND_LOGO = 'https://placehold.co/200x60/3BA9DA/white?text=Acme+Talent';
 
 interface Stage {
   id: string;
@@ -469,7 +469,7 @@ export default function CandidatePortalPage() {
     return (
       <div className="min-h-screen bg-[#E8FBFF] flex items-center justify-center">
         <div className="text-center">
-          <Image src={STC_LOGO} alt="Acme Talent" width={280} height={80} unoptimized className="h-14 w-auto mx-auto mb-8" />
+          <Image src={BRAND_LOGO} alt="Acme Talent" width={280} height={80} unoptimized className="h-14 w-auto mx-auto mb-8" />
           <div className="w-10 h-10 border-3 border-[#6A469D]/20 border-t-[#6A469D] rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[#2D2F8E]/60 text-sm font-medium">Loading your application...</p>
         </div>
@@ -482,7 +482,7 @@ export default function CandidatePortalPage() {
     return (
       <div className="min-h-screen bg-[#E8FBFF] flex items-center justify-center p-4">
         <div className="bg-white rounded-xl shadow-sm border border-neutral-200 p-10 max-w-md w-full text-center">
-          <Image src={STC_LOGO} alt="Acme Talent" width={250} height={70} unoptimized className="h-12 w-auto mx-auto mb-8" />
+          <Image src={BRAND_LOGO} alt="Acme Talent" width={250} height={70} unoptimized className="h-12 w-auto mx-auto mb-8" />
           <div className="w-16 h-16 bg-[#E8FBFF] rounded-xl flex items-center justify-center mx-auto mb-5">
             <DocumentTextIcon className="w-8 h-8 text-[#50C8DF]" />
           </div>
@@ -530,7 +530,7 @@ export default function CandidatePortalPage() {
           <div className="flex items-center justify-between mb-6">
             <Link href="https://acmetalent.com">
               <Image
-                src={STC_LOGO}
+                src={BRAND_LOGO}
                 alt="Acme Talent"
                 width={200}
                 height={56}

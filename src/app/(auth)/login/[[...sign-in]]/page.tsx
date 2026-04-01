@@ -54,7 +54,7 @@ export default function LoginPage() {
       <div className="relative z-10 bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl p-10 w-full max-w-md">
         <div className="flex flex-col items-center text-center mb-8">
           <Image
-            src="https://cdn.prod.website-files.com/68484ceb4053183a87397af5/6849c92715d2914bcb05d69b_STC%20Logo%20COLOR%20CURRENT%202024.png"
+            src="https://placehold.co/280x80/3BA9DA/white?text=Acme+Talent"
             alt="Acme Talent"
             width={280}
             height={80}

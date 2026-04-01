@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  const organizationId = 'stc-org';
+  const organizationId = 'acme-org';
 
   await prisma.organization.upsert({
     where: { id: organizationId },

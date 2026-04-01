@@ -6,7 +6,7 @@ import WebflowFooter from '@/components/public/WebflowFooter';
 import ApplicationForm from '@/components/public/ApplicationForm';
 
 const ATS_BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://hiring.acmetalent.com';
-const LOGO_URL = 'https://cdn.prod.website-files.com/68484ceb4053183a87397af5/6849c92715d2914bcb05d69b_STC%20Logo%20COLOR%20CURRENT%202024.png';
+const LOGO_URL = 'https://placehold.co/200x60/3BA9DA/white?text=Acme+Talent';
 
 const EMPLOYMENT_TYPE_MAP: Record<string, string> = {
   FULL_TIME: 'FULL_TIME',

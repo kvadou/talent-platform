@@ -1,5 +1,5 @@
 /**
- * STC E-Sign API Client
+ * E-Sign API Client
  * Internal e-signature platform at sign.acmetalent.com
  */
 

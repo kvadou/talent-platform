@@ -12,7 +12,7 @@ import {
   ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 
-const STC_LOGO_URL = 'https://cdn.prod.website-files.com/68484ceb4053183a87397af5/6849c92715d2914bcb05d69b_STC%20Logo%20COLOR%20CURRENT%202024-p-500.png';
+const BRAND_LOGO_URL = 'https://placehold.co/200x60/3BA9DA/white?text=Acme+Talent';
 
 interface PageProps {
   params: {
@@ -103,7 +103,7 @@ export default async function UserSchedulePage({ params }: PageProps) {
           <div className="mb-5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={STC_LOGO_URL}
+              src={BRAND_LOGO_URL}
               alt="Acme Talent"
               className="h-8 sm:h-10 mx-auto opacity-90"
             />

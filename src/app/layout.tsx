@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Poppins, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
-// Primary font for all text (STC brand standard)
+// Primary font for all text (brand standard)
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],

@@ -34,7 +34,7 @@ const BRAND_COLORS = {
 };
 
 // Logo URL - using Webflow CDN (500px version for optimal email loading)
-const LOGO_URL = 'https://cdn.prod.website-files.com/68484ceb4053183a87397af5/6849c92715d2914bcb05d69b_STC%20Logo%20COLOR%20CURRENT%202024-p-500.png';
+const LOGO_URL = 'https://placehold.co/200x60/3BA9DA/white?text=Acme+Talent';
 
 // Branded email wrapper
 export function wrapEmailWithBranding(content: string, options?: {

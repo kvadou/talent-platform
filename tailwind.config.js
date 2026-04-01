@@ -123,7 +123,7 @@ module.exports = {
           800: '#991B1B',
           900: '#7F1D1D',
         },
-        // STC brand colors (standard across all STC apps)
+        // Brand colors
         'brand-navy': '#2D2F8E',
         'brand-purple': '#6A469D',
         'brand-cyan': '#50C8DF',
@@ -164,7 +164,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        // Display - Poppins (STC brand standard)
+        // Display - Poppins (brand standard)
         display: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         // Sans - Poppins for body
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],

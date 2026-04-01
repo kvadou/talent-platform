@@ -53,7 +53,7 @@ interface UserData {
   organizationName: string | null;
 }
 
-const STC_LOGO_URL = 'https://cdn.prod.website-files.com/68484ceb4053183a87397af5/6849c92715d2914bcb05d69b_STC%20Logo%20COLOR%20CURRENT%202024-p-500.png';
+const BRAND_LOGO_URL = 'https://placehold.co/200x60/3BA9DA/white?text=Acme+Talent';
 
 interface TimeSlot {
   time: string;
@@ -410,7 +410,7 @@ export default function BookMeetingPage({ params }: PageProps) {
                 {/* Logo + Avatar stacked on desktop, side by side context on mobile */}
                 <div className="flex-shrink-0 lg:mb-5">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={STC_LOGO_URL} alt="Acme Talent" className="h-6 sm:h-7 lg:h-8 mb-3 lg:mb-5" />
+                  <img src={BRAND_LOGO_URL} alt="Acme Talent" className="h-6 sm:h-7 lg:h-8 mb-3 lg:mb-5" />
 
                   <div className="flex items-center gap-3 lg:mb-5">
                     {userData.profileImageUrl ? (
