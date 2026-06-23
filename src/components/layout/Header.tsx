@@ -233,6 +233,18 @@ export function Header({
             <Bars3Icon className="w-6 h-6 text-white" />
           </button>
 
+          {/* Brand */}
+          <Link href="/dashboard" className="flex items-center gap-2.5 mr-1 group" aria-label="Acme Talent home">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-black/5 group-hover:scale-105 transition-transform duration-200">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="11" cy="7.5" r="3.25" fill="#7c3aed" />
+                <path d="M4.75 19.25c0-3.45 2.8-6.25 6.25-6.25s6.25 2.8 6.25 6.25" stroke="#7c3aed" strokeWidth="2.4" strokeLinecap="round" />
+                <circle cx="18.5" cy="6" r="2" fill="#a855f7" />
+              </svg>
+            </span>
+            <span className="hidden sm:inline text-white font-bold text-lg tracking-tight">Acme Talent</span>
+          </Link>
+
           {/* Desktop Market Selector */}
           <div className="hidden lg:flex items-center gap-2 rounded-lg bg-white/10 backdrop-blur-md px-3 py-1.5 text-sm border border-white/20">
             <MarketSelector markets={markets} value={currentMarketId} onChange={onMarketChange} />
@@ -288,20 +300,6 @@ export function Header({
               </div>
             )}
           </div>
-        </div>
-
-        {/* Center Logo */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-          <Link href="/dashboard" className="block group">
-            <div className="flex items-center gap-2 group-hover:scale-105 transition-transform duration-300 drop-shadow-lg">
-              <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 sm:h-9 sm:w-9">
-                <rect width="36" height="36" rx="8" fill="#3b8fc2" />
-                <path d="M8 24L18 10L28 24H8Z" fill="white" fillOpacity="0.9" />
-                <circle cx="18" cy="20" r="4" fill="#3b8fc2" />
-              </svg>
-              <span className="hidden sm:inline text-white font-bold text-lg tracking-tight">Acme Talent</span>
-            </div>
-          </Link>
         </div>
 
         {/* Right side - Actions */}
