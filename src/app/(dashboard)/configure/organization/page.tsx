@@ -5,7 +5,10 @@ import Image from 'next/image';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { BuildingOfficeIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import { BuildingOfficeIcon, PhotoIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import { ScreeningPlayground } from '@/components/playground/ScreeningPlayground';
+
+type Tab = 'details' | 'playground';
 
 type Organization = {
   id: string;
@@ -27,6 +30,22 @@ export default function OrganizationPage() {
   const [industry, setIndustry] = useState('');
   const [size, setSize] = useState('');
   const [description, setDescription] = useState('');
+  const [tab, setTab] = useState<Tab>('details');
+
+  // Initialize tab from ?tab= and keep the URL in sync without navigating.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('tab') === 'playground') setTab('playground');
+  }, []);
+
+  function selectTab(next: Tab) {
+    setTab(next);
+    const params = new URLSearchParams(window.location.search);
+    if (next === 'playground') params.set('tab', 'playground');
+    else params.delete('tab');
+    const qs = params.toString();
+    window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
+  }
 
   useEffect(() => {
     fetchOrganization();
@@ -70,14 +89,6 @@ export default function OrganizationPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-purple"></div>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <div>
@@ -87,6 +98,46 @@ export default function OrganizationPage() {
         </p>
       </div>
 
+      {/* Tabs */}
+      <div className="flex gap-1 border-b border-gray-200">
+        <button
+          onClick={() => selectTab('details')}
+          className={`-mb-px border-b-2 px-4 py-2 text-sm font-medium transition ${
+            tab === 'details'
+              ? 'border-brand-purple text-brand-purple'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          Details
+        </button>
+        <button
+          onClick={() => selectTab('playground')}
+          className={`-mb-px inline-flex items-center gap-1.5 border-b-2 px-4 py-2 text-sm font-medium transition ${
+            tab === 'playground'
+              ? 'border-brand-purple text-brand-purple'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <SparklesIcon className="h-4 w-4" />
+          AI Screening Playground
+        </button>
+      </div>
+
+      {tab === 'playground' ? (
+        <Card>
+          <CardHeader
+            title="AI Screening Playground"
+            subtitle="Try Bella, the AI recruiter — live chat and voice screening, the same engine that powers production candidate screens."
+          />
+          <CardContent>
+            <ScreeningPlayground />
+          </CardContent>
+        </Card>
+      ) : loading ? (
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-purple"></div>
+        </div>
+      ) : (
       <Card>
         <CardHeader title="Organization Details" />
         <CardContent className="space-y-6">
@@ -195,6 +246,7 @@ export default function OrganizationPage() {
           </div>
         </CardContent>
       </Card>
+      )}
     </div>
   );
 }
