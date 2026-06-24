@@ -11,8 +11,17 @@ const ipBuckets = new Map<string, Bucket>();
 const globalBucket: Bucket = { count: 0, resetAt: 0 };
 
 function clientIp(req: Request): string {
+  // Vercel sets x-vercel-forwarded-for to the real client IP (not client-
+  // spoofable). Fall back to the RIGHTMOST x-forwarded-for entry (appended by
+  // the trusted proxy) rather than the leftmost (client-controlled).
+  const vercel = req.headers.get('x-vercel-forwarded-for');
+  if (vercel) return vercel.split(',')[0].trim();
+
   const fwd = req.headers.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0].trim();
+  if (fwd) {
+    const parts = fwd.split(',');
+    return parts[parts.length - 1].trim();
+  }
   return req.headers.get('x-real-ip') || 'unknown';
 }
 

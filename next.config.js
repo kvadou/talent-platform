@@ -21,7 +21,8 @@ const nextConfig = {
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
-          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+          // microphone=(self) so the in-app AI voice screener (Retell web call) can capture the mic.
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(self), geolocation=()' },
         ],
       },
     ];
