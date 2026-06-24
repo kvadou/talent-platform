@@ -10,10 +10,12 @@ import {
   knockoutMessage,
   RECOMMENDATION_LABEL,
 } from '@/lib/screening/playground-engine';
+import { allowRequest, TOO_MANY } from '@/lib/rate-limit';
 
 // Public demo route (the whole app is a public portfolio demo). Stateless:
 // the client holds the transcript + prior per-answer scores and posts them
 // back each turn, so the Playground works regardless of seed state.
+// Intentionally unauthenticated; rate-limited to bound OpenAI spend.
 export const dynamic = 'force-dynamic';
 
 const bodySchema = z.discriminatedUnion('action', [
@@ -32,6 +34,18 @@ const bodySchema = z.discriminatedUnion('action', [
 ]);
 
 export async function POST(req: Request) {
+  // ~40 turns / 5 min per IP; ~600 turns / 5 min globally.
+  if (
+    !allowRequest(req, {
+      perIp: 40,
+      windowMs: 5 * 60_000,
+      global: 600,
+      globalWindowMs: 5 * 60_000,
+    })
+  ) {
+    return NextResponse.json(TOO_MANY, { status: 429 });
+  }
+
   if (!process.env.OPENAI_API_KEY) {
     return NextResponse.json(
       { error: 'AI screening is not configured (missing OpenAI key).' },
