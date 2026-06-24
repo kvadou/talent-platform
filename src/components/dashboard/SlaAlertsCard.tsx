@@ -212,7 +212,6 @@ export function SlaAlertsCard() {
               Attention Required
             </div>
           }
-          accent="yellow"
           action={
             <Badge variant="warning" size="sm">
               {data.summary.totalStuck} stuck
