@@ -204,7 +204,7 @@ export function SlaAlertsCard() {
 
   return (
     <>
-      <Card variant="elevated" className="border-l-4 border-l-orange-500">
+      <Card variant="elevated" className="border border-warning-200 bg-warning-50/30">
         <CardHeader
           title={
             <div className="flex items-center gap-2">

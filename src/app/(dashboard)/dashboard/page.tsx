@@ -424,7 +424,7 @@ export default function DashboardPage() {
           {/* Pending Scorecards */}
           {data.pendingScorecards.length > 0 && (
             <div className="opacity-0 animate-reveal-4">
-              <Card variant="elevated" className="border-l-4 border-l-yellow-500">
+              <Card variant="elevated" className="border border-warning-200 bg-warning-50/30">
                 <CardHeader
                   title="Pending Scorecards"
                   accent="yellow"
