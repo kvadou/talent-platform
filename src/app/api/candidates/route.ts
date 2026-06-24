@@ -5,6 +5,8 @@ import { getUserMarkets } from '@/lib/market-scope';
 import { Prisma } from '@prisma/client';
 import { parseSearchQuery } from '@/lib/search';
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   const session = await getSession();
   if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

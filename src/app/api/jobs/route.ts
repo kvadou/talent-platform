@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { getSession, ensureUser } from '@/lib/auth';
 import { getUserMarkets } from '@/lib/market-scope';
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   const session = await getSession();
   if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

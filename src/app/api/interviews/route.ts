@@ -7,6 +7,8 @@ import { interviewScheduledTemplate } from '@/lib/email-templates';
 import { format } from 'date-fns';
 import { getUserMarkets } from '@/lib/market-scope';
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getSession();
