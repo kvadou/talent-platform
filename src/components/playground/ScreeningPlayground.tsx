@@ -77,7 +77,7 @@ function scoreColor(score: number): string {
 }
 
 export function ScreeningPlayground() {
-  const [mode, setMode] = useState<'chat' | 'voice'>('chat');
+  const [mode, setMode] = useState<'chat' | 'voice'>('voice');
   const [persona, setPersona] = useState<Persona>(PERSONAS[0]);
 
   // Chat state
@@ -233,15 +233,6 @@ export function ScreeningPlayground() {
       {/* Mode toggle */}
       <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-1">
         <button
-          onClick={() => setMode('chat')}
-          className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition ${
-            mode === 'chat' ? 'bg-white text-brand-purple shadow-sm' : 'text-gray-500'
-          }`}
-        >
-          <ChatBubbleLeftRightIcon className="h-4 w-4" />
-          Chat screen
-        </button>
-        <button
           onClick={() => setMode('voice')}
           className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition ${
             mode === 'voice' ? 'bg-white text-brand-purple shadow-sm' : 'text-gray-500'
@@ -249,6 +240,15 @@ export function ScreeningPlayground() {
         >
           <MicrophoneIcon className="h-4 w-4" />
           Voice screen
+        </button>
+        <button
+          onClick={() => setMode('chat')}
+          className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition ${
+            mode === 'chat' ? 'bg-white text-brand-purple shadow-sm' : 'text-gray-500'
+          }`}
+        >
+          <ChatBubbleLeftRightIcon className="h-4 w-4" />
+          Chat screen
         </button>
       </div>
 
